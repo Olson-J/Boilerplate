@@ -13,14 +13,14 @@ This plan outlines the development of a production-ready Next.js + Supabase star
 
 ## 📈 Progress Tracking
 
-**Current Status:** Phase 3 Complete ✅
+**Current Status:** Phase 4 Complete ✅
 
 | Phase | Status | Completion | Notes |
 |-------|--------|-----------|-------|
 | Phase 1: Project Foundation | ✅ COMPLETE | 100% | Project structure, config, and code quality setup finished. All verification checks passed. |
 | Phase 2: Testing Framework | ✅ COMPLETE | 100% | Vitest configured, helpers created, and example tests passing |
 | Phase 3: Supabase Config | ✅ COMPLETE | 100% | Supabase config reviewed, types added, middleware + tests passing |
-| Phase 4: Auth Utilities | ⏳ PENDING | 0% | |
+| Phase 4: Auth Utilities | ✅ COMPLETE | 100% | Server auth utilities + useAuth hook with tests |
 | Phase 5: Database Schema | ⏳ PENDING | 0% | |
 | Phase 6: UI Components | ⏳ PENDING | 0% | |
 | Phase 7: Page Implementation | ⏳ PENDING | 0% | |
@@ -31,7 +31,7 @@ This plan outlines the development of a production-ready Next.js + Supabase star
 | Phase 12: Final QA | ⏳ PENDING | 0% | |
 | Phase 13: Deployment | ⏳ PENDING | 0% | |
 
-**Overall Progress:** 3/13 phases complete (23.1%)
+**Overall Progress:** 4/13 phases complete (30.8%)
 
 ---
 
@@ -112,6 +112,25 @@ All tasks for Phase 1 have been successfully completed and verified:
 - `middleware.ts` delegates to [proxy.ts](proxy.ts) for token refresh.
 - Database types should be regenerated after schemas are defined:
   `npx supabase gen types typescript --local > lib/types/database.ts`
+
+---
+
+## 📝 Phase 4 Summary
+
+### ✅ What Was Completed
+
+**Authentication Utilities - COMPLETE**
+
+- ✅ Added server auth utilities in [lib/auth/server.ts](lib/auth/server.ts):
+  - `getUser()` returns current user or null; throws on Supabase errors
+  - `requireAuth()` throws when unauthenticated
+- ✅ Added client auth hook in [lib/hooks/useAuth.ts](lib/hooks/useAuth.ts):
+  - Manages user, loading, error state
+  - Subscribes to auth state changes
+  - Exposes `signOut()` helper
+- ✅ Added tests:
+  - [__tests__/unit/auth/server.test.ts](__tests__/unit/auth/server.test.ts)
+  - [__tests__/hooks/useAuth.test.tsx](__tests__/hooks/useAuth.test.tsx)
 
 ---
 
@@ -262,11 +281,11 @@ npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-
 #### 4.1 Server-Side Auth Utilities
 **⚠️ Write tests BEFORE implementation**
 
-- [ ] **TEST:** Write tests for `getUser()` function
+- [x] **TEST:** Write tests for `getUser()` function
   - Test successful user retrieval
   - Test handling null user
   - Test error cases
-- [ ] **IMPLEMENT:** Create `lib/auth/server.ts`
+- [x] **IMPLEMENT:** Create `lib/auth/server.ts`
   - Implement `getUser()` function
   - Implement `requireAuth()` function
 
@@ -277,12 +296,12 @@ npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-
 #### 4.2 Client-Side Auth Hook
 **⚠️ Write tests BEFORE implementation**
 
-- [ ] **TEST:** Write tests for `useAuth()` hook
+- [x] **TEST:** Write tests for `useAuth()` hook
   - Test loading states
   - Test user state management
   - Test sign out functionality
   - Test error handling
-- [ ] **IMPLEMENT:** Create `lib/hooks/useAuth.ts`
+- [x] **IMPLEMENT:** Create `lib/hooks/useAuth.ts`
   - Return user, loading, error states
   - Provide sign out method
   - Handle auth state changes
