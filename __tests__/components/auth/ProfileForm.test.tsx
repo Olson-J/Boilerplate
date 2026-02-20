@@ -1,9 +1,57 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
 import { ProfileForm } from "@/components/auth/ProfileForm";
 
+const { mockUploadAvatar, mockSupabaseClient } = vi.hoisted(() => {
+  return {
+    mockUploadAvatar: vi.fn(),
+    mockSupabaseClient: {
+      auth: {
+        getUser: vi.fn(),
+      },
+      from: vi.fn(),
+      storage: {
+        from: vi.fn(),
+      },
+    },
+  };
+});
+
+vi.mock("@/lib/utils/uploadAvatar", () => ({
+  uploadAvatar: mockUploadAvatar,
+}));
+
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: vi.fn(() => mockSupabaseClient),
+}));
+
 describe("ProfileForm", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    mockUploadAvatar.mockResolvedValue({
+      url: "https://example.com/avatar.png",
+    });
+
+    mockSupabaseClient.auth.getUser.mockResolvedValue({
+      data: { user: { id: "test-user-id" } },
+    });
+
+    mockSupabaseClient.from.mockReturnValue({
+      update: vi.fn().mockReturnValue({
+        eq: vi.fn().mockResolvedValue({ error: null }),
+      }),
+    });
+
+    mockSupabaseClient.storage.from.mockReturnValue({
+      upload: vi.fn().mockResolvedValue({ error: null }),
+      getPublicUrl: vi.fn().mockReturnValue({
+        data: { publicUrl: "https://example.com/avatar.png" },
+      }),
+    });
+  });
+
   it("renders full name and avatar inputs", () => {
     renderWithProviders(<ProfileForm onSubmit={vi.fn()} />);
 
@@ -21,6 +69,9 @@ describe("ProfileForm", () => {
     await user.type(screen.getByLabelText("Full name"), "Ada Lovelace");
     await user.upload(screen.getByLabelText("Avatar"), file);
     await user.click(screen.getByRole("button", { name: "Save profile" }));
+
+    // Wait for async operations
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     expect(handleSubmit).toHaveBeenCalledWith({
       fullName: "Ada Lovelace",

@@ -4,6 +4,8 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Form } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
+import { uploadAvatar } from "@/lib/utils/uploadAvatar";
+import { createClient } from "@/lib/supabase/client";
 
 type ProfileFormValues = {
   fullName: string;
@@ -45,19 +47,59 @@ export const ProfileForm = ({
 }: ProfileFormProps) => {
   const [fullName, setFullName] = useState(initialFullName);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string>("");
 
   const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
     const [file] = event.currentTarget.files ?? [];
     setAvatarFile(file ?? null);
+    setUploadError("");
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setUploadError("");
+
+    // If there's an avatar file to upload
+    if (avatarFile) {
+      const supabase = createClient();
+
+      // Get current user
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setUploadError("Not authenticated");
+        return;
+      }
+
+      // Upload avatar
+      const result = await uploadAvatar(avatarFile, user.id);
+
+      if (result.error) {
+        setUploadError(result.error);
+        return;
+      }
+
+      // Update profile with avatar URL
+      if (result.url) {
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({ avatar_url: result.url })
+          .eq("id", user.id);
+
+        if (updateError) {
+          setUploadError("Failed to save avatar URL");
+          return;
+        }
+      }
+    }
+
     onSubmit({ fullName, avatarFile });
   };
 
   return (
-    <Form onSubmit={handleSubmit} loading={loading} error={error}>
+    <Form onSubmit={handleSubmit} loading={loading} error={error || uploadError}>
       <Input
         id="profile-full-name"
         label="Full name"
