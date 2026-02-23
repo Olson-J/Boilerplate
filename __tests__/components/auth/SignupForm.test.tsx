@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
-import { SignupForm } from "@/components/auth/SignupForm";
+import { SignupForm } from "../../../components/auth/SignupForm";
 
 describe("SignupForm", () => {
   it("renders signup fields", () => {

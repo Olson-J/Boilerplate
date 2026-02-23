@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
-import { Card } from "@/components/ui/Card";
+import { Card } from "../../../components/ui/Card";
 
 describe("Card", () => {
   it("renders title and description when provided", () => {

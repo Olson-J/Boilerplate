@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
-import SignupPage from "@/app/(auth)/signup/page";
+import SignupPage from "../../app/(auth)/signup/page";
 
 describe("Signup page", () => {
   it("renders the signup heading and form", () => {

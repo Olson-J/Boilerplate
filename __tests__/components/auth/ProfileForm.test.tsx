@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
-import { ProfileForm } from "@/components/auth/ProfileForm";
+import { ProfileForm } from "../../../components/auth/ProfileForm";
 
 const { mockUploadAvatar, mockSupabaseClient } = vi.hoisted(() => {
   return {
@@ -23,7 +23,7 @@ vi.mock("@/lib/utils/uploadAvatar", () => ({
 }));
 
 vi.mock("@/lib/supabase/client", () => ({
-  createClient: vi.fn(() => mockSupabaseClient),
+  createSupabaseClient: vi.fn(() => mockSupabaseClient),
 }));
 
 describe("ProfileForm", () => {

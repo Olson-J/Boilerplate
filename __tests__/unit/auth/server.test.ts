@@ -41,10 +41,10 @@ describe("server auth utilities", () => {
     await expect(getUser()).rejects.toThrow("Auth error");
   });
 
-  it("requireAuth throws when unauthenticated", async () => {
+  it("requireAuth redirects when unauthenticated", async () => {
     mockGetUser.mockResolvedValueOnce({ data: { user: null }, error: null });
 
     const { requireAuth } = await import("@/lib/auth/server");
-    await expect(requireAuth()).rejects.toThrow("User not authenticated");
+    await expect(requireAuth()).rejects.toThrow("NEXT_REDIRECT");
   });
 });

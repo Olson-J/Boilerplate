@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../../../components/ui/Button";
 
 describe("Button", () => {
   it("renders the provided label", () => {

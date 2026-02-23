@@ -5,7 +5,7 @@ vi.mock("@/lib/auth/server", () => ({
   requireAuth: vi.fn(async () => ({ id: "user-1", email: "user@example.com" })),
 }));
 
-import DashboardPage from "@/app/(dashboard)/dashboard/page";
+import DashboardPage from "../../app/(dashboard)/dashboard/page";
 
 describe("Dashboard page", () => {
   it("renders the dashboard heading and user email", async () => {

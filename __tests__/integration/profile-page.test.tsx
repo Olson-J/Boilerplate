@@ -30,10 +30,10 @@ vi.mock("@/lib/utils/uploadAvatar", () => ({
 }));
 
 vi.mock("@/lib/supabase/client", () => ({
-  createClient: vi.fn(() => mockSupabaseClient),
+  createSupabaseClient: vi.fn(() => mockSupabaseClient),
 }));
 
-import ProfilePage from "@/app/(dashboard)/profile/page";
+import ProfilePage from "../../app/(dashboard)/profile/page";
 
 describe("Profile page", () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
-import { Input } from "@/components/ui/Input";
+import { Input } from "../../../components/ui/Input";
 
 describe("Input", () => {
   it("renders a label when provided", () => {

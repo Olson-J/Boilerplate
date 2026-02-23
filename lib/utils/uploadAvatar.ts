@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/client";
+import { createSupabaseClient } from "@/lib/supabase/client";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
@@ -28,7 +28,7 @@ export async function uploadAvatar(
   }
 
   try {
-    const supabase = createClient();
+    const supabase = createSupabaseClient();
 
     // Create unique filename: userId/timestamp-originalname
     const timestamp = Date.now();

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Form } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
 import { uploadAvatar } from "@/lib/utils/uploadAvatar";
-import { createClient } from "@/lib/supabase/client";
+import { createSupabaseClient } from "@/lib/supabase/client";
 
 type ProfileFormValues = {
   fullName: string;
@@ -61,7 +61,7 @@ export const ProfileForm = ({
 
     // If there's an avatar file to upload
     if (avatarFile) {
-      const supabase = createClient();
+      const supabase = createSupabaseClient();
 
       // Get current user
       const {

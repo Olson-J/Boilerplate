@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { createSupabaseClient } from "@/lib/supabase/client";
 
 type LoginState = {
   loading: boolean;
@@ -12,9 +13,21 @@ type LoginState = {
 export default function LoginPage() {
   const [state, setState] = useState<LoginState>({ loading: false });
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values: { email: string; password: string }) => {
     setState({ loading: true });
-    setState({ loading: false });
+
+    const supabase = createSupabaseClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (error) {
+      setState({ loading: false, error: error.message });
+      return;
+    }
+
+    window.location.assign("/dashboard");
   };
 
   return (

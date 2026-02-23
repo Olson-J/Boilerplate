@@ -1,4 +1,5 @@
 import type { User } from "@supabase/supabase-js";
+import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 /**
@@ -10,6 +11,13 @@ export async function getUser(): Promise<User | null> {
   const { data, error } = await supabase.auth.getUser();
 
   if (error) {
+    if (
+      error.name === "AuthSessionMissingError" ||
+      error.message === "Auth session missing!"
+    ) {
+      return null;
+    }
+
     throw error;
   }
 
@@ -23,7 +31,7 @@ export async function requireAuth(): Promise<User> {
   const user = await getUser();
 
   if (!user) {
-    throw new Error("User not authenticated");
+    redirect("/login");
   }
 
   return user;

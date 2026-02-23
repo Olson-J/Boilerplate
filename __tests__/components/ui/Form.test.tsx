@@ -1,7 +1,7 @@
 import type { FormEvent } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/helpers/testUtils";
-import { Form } from "@/components/ui/Form";
+import { Form } from "../../../components/ui/Form";
 
 describe("Form", () => {
   it("renders children inside a form", () => {
