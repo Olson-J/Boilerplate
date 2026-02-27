@@ -8,6 +8,23 @@ export interface UploadAvatarResult {
   error?: string;
 }
 
+/**
+ * Uploads an avatar image to Supabase Storage.
+ * 
+ * @param file - The image file to upload
+ * @param userId - The ID of the user uploading the avatar
+ * @returns Promise resolving to either the public URL or an error message
+ * 
+ * @example
+ * ```typescript
+ * const result = await uploadAvatar(file, user.id);
+ * if (result.error) {
+ *   console.error(result.error);
+ * } else {
+ *   console.log('Avatar uploaded:', result.url);
+ * }
+ * ```
+ */
 export async function uploadAvatar(
   file: File,
   userId: string
