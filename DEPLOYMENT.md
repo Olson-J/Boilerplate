@@ -88,7 +88,7 @@ You have two options: Automated (recommended) or Manual.
    - Click **Settings → Secrets and variables → Actions**
    - Click **New repository secret**
    
-   **Add these two secrets:**
+   **Add these three secrets:**
    
    **Secret 1:**
    - Name: `SUPABASE_PROJECT_ID`
@@ -97,6 +97,10 @@ You have two options: Automated (recommended) or Manual.
    **Secret 2:**
    - Name: `SUPABASE_ACCESS_TOKEN`
    - Value: The access token you just created
+
+   **Secret 3:**
+   - Name: `SUPABASE_DB_PASSWORD`
+   - Value: Your Supabase project's database password (set when you created the project)
 
 3. **Push Migrations to Main Branch**
    ```bash
