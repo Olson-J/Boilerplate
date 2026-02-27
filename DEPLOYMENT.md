@@ -105,9 +105,13 @@ You have two options: Automated (recommended) or Manual.
    git push origin main
    ```
 
+   If Git says there is nothing to commit, that means the migration files are already in the repo.
+   In that case, run the workflow manually from GitHub Actions instead of creating a no-op commit.
+
 4. **Verify Migration Workflow**
    - Go to **GitHub → Actions tab**
-   - You should see a workflow run "Migrate Supabase Database"
+   - Open workflow **"Migrate Supabase Database"**
+   - Click **Run workflow** (manual trigger) if no new migration files were pushed
    - Click on it to view logs
    - Verify it completes successfully (green checkmark ✅)
 

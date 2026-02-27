@@ -1,6 +1,7 @@
-name: Run Supabase Migrations
+name: Migrate Supabase Database
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
