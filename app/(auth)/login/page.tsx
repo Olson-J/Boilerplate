@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { createSupabaseClient } from "@/lib/supabase/client";
@@ -32,10 +33,16 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 px-6 py-16">
-      <div className="mx-auto w-full max-w-md">
+      <div className="mx-auto w-full max-w-md space-y-4">
         <Card title="Log in to your account" description="Welcome back.">
           <LoginForm onSubmit={handleSubmit} loading={state.loading} error={state.error} />
         </Card>
+        <p className="text-center text-sm text-slate-600">
+          Don't have an account?{" "}
+          <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-500">
+            Sign up
+          </Link>
+        </p>
       </div>
     </main>
   );

@@ -357,8 +357,8 @@ export default function ProfileForm({ initialProfile }) {
     // Client-side mutation
     const { error } = await supabase
       .from('profiles')
-      .update({ display_name: name })
-      .eq('user_id', initialProfile.user_id)
+      .update({ full_name: name })
+      .eq('id', initialProfile.id)
     
     if (error) {
       setError(error.message)

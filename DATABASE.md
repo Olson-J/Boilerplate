@@ -28,15 +28,15 @@ The profiles table stores user profile information with a one-to-one relationshi
 
 **Purpose:** Extended user profile data beyond basic authentication info.
 
-**Relationship:** Each profile is linked to exactly one user in `auth.users` via `user_id`.
+**Relationship:** Each profile is linked to exactly one user in `auth.users` via `id`.
 
 **Schema:**
 
 ```sql
 CREATE TABLE public.profiles (
-    user_id         UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    id              UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     email           TEXT NOT NULL,
-    display_name    TEXT,
+    full_name       TEXT,
     avatar_url      TEXT,
     bio             TEXT,
     created_at      TIMESTAMPTZ DEFAULT NOW() NOT NULL,
@@ -48,19 +48,20 @@ CREATE TABLE public.profiles (
 
 | Column | Type | Nullable | Description |
 |--------|------|----------|-------------|
-| `user_id` | UUID | NOT NULL | Primary key, foreign key to auth.users(id) |
+| `id` | UUID | NOT NULL | Primary key, foreign key to auth.users(id) |
 | `email` | TEXT | NOT NULL | User's email address (synced from auth) |
-| `display_name` | TEXT | NULL | User's chosen display name |
+| `full_name` | TEXT | NULL | User's full name |
 | `avatar_url` | TEXT | NULL | URL to user's avatar image in Supabase Storage |
-| `bio` | TEXT | NULL | User's biography or description |
+| `bio` | TEXT | NULL | User's biography or description (max 160 chars) |
 | `created_at` | TIMESTAMPTZ | NOT NULL | Timestamp when profile was created |
 | `updated_at` | TIMESTAMPTZ | NOT NULL | Timestamp when profile was last updated |
 
 **Indexes:**
 
 ```sql
--- Primary key automatically creates index on user_id
 -- No additional indexes needed for current use case
+-- If querying by full_name becomes common, consider:
+-- CREATE INDEX idx_profiles_full_name ON profiles(full_name);
 ```
 
 **Constraints:**
@@ -154,8 +155,8 @@ USING (auth.uid() = user_id);
 ```sql
 -- User A (auth.uid() = 'aaa-bbb-ccc') attempts:
 UPDATE profiles
-SET display_name = 'New Name'
-WHERE user_id = 'xxx-yyy-zzz';  -- Different user
+SET full_name = 'New Name'
+WHERE id = 'xxx-yyy-zzz';  -- Different user
 
 -- Result: UPDATE fails silently (0 rows affected)
 ```
@@ -186,14 +187,14 @@ DELETE FROM auth.users WHERE id = 'user-id';
 SET LOCAL ROLE authenticated;
 SET LOCAL request.jwt.claim.sub = 'user-a-uuid';
 
-SELECT * FROM profiles WHERE user_id = 'user-a-uuid';
+SELECT * FROM profiles WHERE id = 'user-a-uuid';
 -- Expected: Returns 1 row
 ```
 
 **Test Case 2: User cannot read other profiles**
 ```sql
 -- Still as user A
-SELECT * FROM profiles WHERE user_id = 'user-b-uuid';
+SELECT * FROM profiles WHERE id = 'user-b-uuid';
 -- Expected: Returns 0 rows (not an error, just empty)
 ```
 
@@ -201,8 +202,8 @@ SELECT * FROM profiles WHERE user_id = 'user-b-uuid';
 ```sql
 -- As user A
 UPDATE profiles
-SET display_name = 'New Name'
-WHERE user_id = 'user-a-uuid';
+SET full_name = 'New Name'
+WHERE id = 'user-a-uuid';
 -- Expected: 1 row updated
 ```
 
@@ -210,8 +211,8 @@ WHERE user_id = 'user-a-uuid';
 ```sql
 -- As user A
 UPDATE profiles
-SET display_name = 'Hacked'
-WHERE user_id = 'user-b-uuid';
+SET full_name = 'Hacked'
+WHERE id = 'user-b-uuid';
 -- Expected: 0 rows updated (silently fails)
 ```
 
@@ -345,9 +346,9 @@ Edit the schema file in `supabase/schemas/`.
 ```sql
 -- supabase/schemas/profiles.sql
 CREATE TABLE public.profiles (
-    user_id         UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    id              UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     email           TEXT NOT NULL,
-    display_name    TEXT,
+    full_name       TEXT,
     avatar_url      TEXT,
     bio             TEXT,
     phone_number    TEXT,  -- NEW COLUMN
@@ -562,8 +563,8 @@ When you push to main branch, GitHub Actions workflow automatically:
 ```typescript
 const { data, error } = await supabase
   .from('profiles')
-  .select('user_id, display_name, avatar_url')
-  .eq('user_id', userId)
+  .select('id, full_name, avatar_url')
+  .eq('id', userId)
   .single()
 ```
 
@@ -572,9 +573,9 @@ const { data, error } = await supabase
 const { data, error } = await supabase
   .from('profiles')
   .insert({
-    user_id: userId,
+    id: userId,
     email: email,
-    display_name: displayName
+    full_name: fullName
   })
 ```
 
@@ -582,8 +583,8 @@ const { data, error } = await supabase
 ```typescript
 const { data, error } = await supabase
   .from('profiles')
-  .update({ display_name: newName })
-  .eq('user_id', userId)
+  .update({ full_name: newName })
+  .eq('id', userId)
 ```
 
 #### Delete Query
@@ -592,7 +593,7 @@ const { data, error } = await supabase
 const { error } = await supabase
   .from('profiles')
   .delete()
-  .eq('user_id', userId)
+  .eq('id', userId)
 ```
 
 **Note:** All queries automatically respect RLS policies.
@@ -623,13 +624,13 @@ SELECT
     u.email as auth_email,
     u.created_at as user_created_at
 FROM profiles p
-JOIN auth.users u ON p.user_id = u.id;
+JOIN auth.users u ON p.id = u.id;
 
 -- Count profiles
 SELECT COUNT(*) FROM profiles;
 
--- Find profiles without display names
-SELECT * FROM profiles WHERE display_name IS NULL;
+-- Find profiles without names
+SELECT * FROM profiles WHERE full_name IS NULL;
 ```
 
 ---
@@ -723,16 +724,16 @@ Add test/development data in `supabase/seed.sql`:
 -- Note: In production, users come from auth.users automatically
 
 -- Update test profile
-INSERT INTO profiles (user_id, email, display_name, bio)
+INSERT INTO profiles (id, email, full_name, bio)
 VALUES (
     'test-user-uuid',
     'test@example.com',
     'Test User',
     'This is a test account'
 )
-ON CONFLICT (user_id) DO UPDATE
+ON CONFLICT (id) DO UPDATE
 SET 
-    display_name = EXCLUDED.display_name,
+    full_name = EXCLUDED.full_name,
     bio = EXCLUDED.bio;
 ```
 

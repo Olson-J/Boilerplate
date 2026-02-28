@@ -27,6 +27,13 @@ type SignupFormProps = {
 };
 
 /**
+ * Basic email validation
+ */
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+/**
  * Signup form for email/password registration.
  */
 export const SignupForm = ({
@@ -37,14 +44,25 @@ export const SignupForm = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [validationError, setValidationError] = useState("");
+
+  const isFormValid = email.trim() !== "" && password.trim() !== "" && confirmPassword.trim() !== "";
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setValidationError("");
+
+    // Validate email format
+    if (!isValidEmail(email)) {
+      setValidationError("Please enter a valid email address");
+      return;
+    }
+
     onSubmit({ email, password, confirmPassword });
   };
 
   return (
-    <Form onSubmit={handleSubmit} loading={loading} error={error}>
+    <Form onSubmit={handleSubmit} loading={loading} error={error || validationError}>
       <Input
         id="signup-email"
         label="Email"
@@ -72,7 +90,12 @@ export const SignupForm = ({
         onChange={(event) => setConfirmPassword(event.currentTarget.value)}
         required
       />
-      <Button type="submit" loading={loading} loadingLabel="Creating account">
+      <Button 
+        type="submit" 
+        loading={loading} 
+        loadingLabel="Creating account"
+        disabled={!isFormValid || loading}
+      >
         Create account
       </Button>
     </Form>

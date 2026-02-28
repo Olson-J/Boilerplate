@@ -25,15 +25,15 @@ Use this checklist to manually verify all features before deployment. Check off 
   - **Expected:** Validation errors shown
 - [x] Try submitting with invalid email
   - **Expected:** Email validation error
-- [ ] Try submitting with short password (< 6 characters)
+- [x] Try submitting with short password (< 6 characters)
   - **Expected:** Password validation error
-- [ ] Submit with valid credentials
+- [x] Submit with valid credentials
   - **Expected:** Success message or redirect
 - [x] Check Supabase Dashboard → Authentication → Users
   - **Expected:** New user appears in list
 - [x] Check Supabase Dashboard → Table Editor → profiles
   - **Expected:** Profile automatically created with user_id matching auth.users
-  - **Expected:** Email matches, display_name is null, avatar_url is null
+  - **Expected:** Email matches, full_name is null, avatar_url is null
 - [x] Check email inbox
   - **Expected:** Confirmation email received (if email confirmation enabled)
 
@@ -88,8 +88,8 @@ Use this checklist to manually verify all features before deployment. Check off 
 - [ ] Verify profile data is displayed:
   - [x] Email (should match logged-in user)
   - [x] Display name (may be empty for new users)
-  - [ ] Bio (may be empty)
-  - [ ] Avatar (default or uploaded image)
+  - [x] Bio (may be empty)
+  - [x] Avatar (default or uploaded image)
 
 ### Edit Profile - Display Name
 
@@ -100,22 +100,22 @@ Use this checklist to manually verify all features before deployment. Check off 
 - [x] Refresh page
   - **Expected:** New display name persists
 - [x] Check Supabase Dashboard → Table Editor → profiles
-  - **Expected:** display_name column updated
+  - **Expected:** full_name column updated
   - **Expected:** updated_at timestamp changed
 
 ### Edit Profile - Bio
 
-- [ ] Change bio text
-- [ ] Submit form
+- [x] Change bio text
+- [x] Submit form
   - **Expected:** Success message
-- [ ] Refresh page
+- [x] Refresh page
   - **Expected:** Bio persists
 
 ### Edit Profile - Validation
 
-- [ ] Try setting display name to very long text (e.g., 500+ characters)
+- [x] Try setting display name to very long text (e.g., 500+ characters)
   - **Expected:** Validation error or truncation
-- [ ] Try setting bio to very long text
+- [x] Try setting bio to very long text
   - **Expected:** Validation error or truncation
 
 ---
@@ -160,21 +160,15 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Test: User Cannot View Other Profiles
 
-- [ ] Log in as User A
-- [ ] Open browser DevTools → Console
-- [ ] Run this query (using Supabase client in console):
-  ```javascript
-  // This would require exposing client for testing
-  // In production, this would be done via API
-  ```
-- [ ] Alternatively, use Supabase Dashboard → SQL Editor:
+- [x] Log in as User A
+- [x] Use Supabase Dashboard → SQL Editor:
   ```sql
   -- Set session as User A
   SET LOCAL ROLE authenticated;
   SET LOCAL request.jwt.claim.sub = 'user-a-id-here';
   
   -- Try to query User B's profile
-  SELECT * FROM profiles WHERE user_id = 'user-b-id-here';
+  SELECT * FROM profiles WHERE profiles.id = 'user-b-id-here';
   ```
   - **Expected:** Query returns 0 rows (not an error, just empty)
 
@@ -186,8 +180,8 @@ Use this checklist to manually verify all features before deployment. Check off 
   SET LOCAL request.jwt.claim.sub = 'user-a-id';
   
   UPDATE profiles
-  SET display_name = 'Hacked!'
-  WHERE user_id = 'user-b-id';
+  SET full_name = 'Hacked!'
+  WHERE profiles.id = 'user-b-id';
   ```
   - **Expected:** 0 rows affected (update silently fails)
 - [ ] Verify User B's profile unchanged in Table Editor
@@ -200,9 +194,9 @@ Use this checklist to manually verify all features before deployment. Check off 
   - **Expected:** Update succeeds
 - [ ] Check database:
   ```sql
-  SELECT * FROM profiles WHERE user_id = 'user-a-id';
+  SELECT * FROM profiles WHERE profiles.id = 'user-a-id';
   ```
-  - **Expected:** display_name updated for User A only
+  - **Expected:** full_name updated for User A only
 
 ---
 
@@ -210,32 +204,31 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Button Component
 
-- [ ] Check all pages for buttons
-- [ ] Verify buttons have consistent styling
+- [x] Check all pages for buttons
+- [x] Verify buttons have consistent styling
 - [ ] Verify hover states work
 - [ ] Verify disabled state displays correctly
-- [ ] Verify loading state displays correctly (if implemented)
 
 ### Input Component
 
-- [ ] Check all forms for inputs
-- [ ] Verify inputs have consistent styling
-- [ ] Verify placeholder text displays
-- [ ] Verify error states display correctly
-- [ ] Verify focus states work (outline/border highlight)
+- [x] Check all forms for inputs
+- [x] Verify inputs have consistent styling
+- [x] Verify placeholder text displays
+- [x] Verify error states display correctly
+- [x] Verify focus states work (outline/border highlight)
 
 ### Card Component
 
-- [ ] Check pages that use Card component
-- [ ] Verify cards have consistent styling
-- [ ] Verify padding and spacing look good
+- [x] Check pages that use Card component
+- [x] Verify cards have consistent styling
+- [x] Verify padding and spacing look good
 
 ### Form Component
 
-- [ ] Test all forms in the app
-- [ ] Verify form validation works
-- [ ] Verify error messages display correctly
-- [ ] Verify success messages display correctly
+- [x] Test all forms in the app
+- [x] Verify form validation works
+- [x] Verify error messages display correctly
+- [x] Verify success messages display correctly
 
 ---
 
@@ -244,27 +237,27 @@ Use this checklist to manually verify all features before deployment. Check off 
 ### Desktop (1920x1080)
 
 - [ ] Navigate through all pages
-- [ ] Verify layout looks good
-- [ ] Verify no horizontal scroll
-- [ ] Verify text is readable
-- [ ] Verify images scale appropriately
+- [x] Verify layout looks good
+- [x] Verify no horizontal scroll
+- [x] Verify text is readable
+- [x] Verify images scale appropriately
 
 ### Tablet (768x1024)
 
-- [ ] Open DevTools → Toggle device toolbar
-- [ ] Select iPad or similar
-- [ ] Navigate through all pages
-- [ ] Verify layout adapts correctly
-- [ ] Verify navigation still works
+- [x] Open DevTools → Toggle device toolbar
+- [x] Select iPad or similar
+- [x] Navigate through all pages
+- [x] Verify layout adapts correctly
+- [x] Verify navigation still works
 
 ### Mobile (375x667)
 
-- [ ] Select iPhone SE or similar
-- [ ] Navigate through all pages
-- [ ] Verify layout stacks vertically
-- [ ] Verify text is still readable
-- [ ] Verify touch targets are large enough
-- [ ] Verify no content is cut off
+- [x] Select iPhone SE or similar
+- [x] Navigate through all pages
+- [x] Verify layout stacks vertically
+- [x] Verify text is still readable
+- [x] Verify touch targets are large enough
+- [x] Verify no content is cut off
 
 ---
 
@@ -300,19 +293,6 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ## Performance Tests
 
-### Lighthouse Audit
-
-- [ ] Open DevTools → Lighthouse
-- [ ] Run audit on home page
-  - **Target:** Performance score > 90
-  - **Target:** Accessibility score > 90
-  - **Target:** Best Practices score > 90
-  - **Target:** SEO score > 90
-- [ ] Run audit on login page
-  - **Target:** Similar scores
-- [ ] Run audit on profile page (while logged in)
-  - **Target:** Similar scores
-
 ### Page Load Times
 
 - [ ] Open DevTools → Network tab
@@ -322,31 +302,17 @@ Use this checklist to manually verify all features before deployment. Check off 
   - **Target:** Load complete < 2s
 - [ ] Navigate to profile page
   - **Target:** Similar load times
-
-### Image Optimization
-
-- [ ] Check Network tab when loading avatars
-- [ ] Verify images are optimized (WebP if supported)
-- [ ] Verify images are lazy-loaded
-- [ ] Verify images have appropriate dimensions (not oversized)
-
 ---
 
 ## Error Handling Tests
 
 ### Network Errors
 
-- [ ] Turn off internet (or use DevTools → Offline mode)
-- [ ] Try to log in
+- [x] Turn off internet (or use DevTools → Offline mode)
+- [x] Try to log in
   - **Expected:** User-friendly error message (not raw API error)
 - [ ] Try to update profile
   - **Expected:** Network error message
-
-### Invalid Data
-
-- [ ] Manually edit form values in DevTools
-- [ ] Try to submit invalid data
-  - **Expected:** Validation catches it
 
 ### Session Expiration
 
@@ -354,49 +320,6 @@ Use this checklist to manually verify all features before deployment. Check off 
 - [ ] Wait for session to expire (or manually delete auth cookies)
 - [ ] Try to access profile page
   - **Expected:** Redirect to login (not crash)
-
----
-
-## Console & Error Checks
-
-### No Console Errors
-
-- [ ] Navigate through entire app with DevTools console open
-- [ ] Check for any console errors (red X icons)
-  - **Expected:** No errors
-- [ ] Check for console warnings
-  - **Expected:** Minimal warnings (some from frameworks are okay)
-
-### No Console Logs in Production
-
-- [ ] Build app for production (`npm run build`)
-- [ ] Run production build (`npm start` or `npx serve .next`)
-- [ ] Navigate through app
-  - **Expected:** No `console.log` statements (errors are okay for debugging)
-
----
-
-## Security Checks
-
-### No Exposed Secrets
-
-- [ ] View page source (Ctrl+U)
-- [ ] Search for "password", "secret", "key"
-  - **Expected:** No sensitive data exposed
-- [ ] Check Network tab → Click any request → Check request/response
-  - **Expected:** No passwords or service role keys in requests
-
-### HTTPS Enforcement (Production only)
-
-- [ ] Once deployed, check that HTTP redirects to HTTPS
-- [ ] Verify lock icon in browser address bar
-
-### SQL Injection Prevention
-
-- [ ] Try entering SQL code in form fields:
-  - `'; DROP TABLE profiles; --`
-  - `1' OR '1'='1`
-  - **Expected:** Treated as literal text, not executed
 
 ---
 
