@@ -32,7 +32,19 @@ export const ProfilePageClient = ({ initialFullName, initialBio }: ProfilePageCl
         error: userError,
       } = await supabase.auth.getUser();
 
-      if (userError || !user) {
+      if (userError) {
+        // Check if it's a network error
+        if (userError.message.toLowerCase().includes('network') || 
+            userError.message.toLowerCase().includes('failed') ||
+            userError.message.toLowerCase().includes('offline')) {
+          setState({ loading: false, error: "Network error. Please check your connection and try again." });
+        } else {
+          setState({ loading: false, error: userError.message });
+        }
+        return;
+      }
+
+      if (!user) {
         setState({ loading: false, error: "Not authenticated" });
         return;
       }
@@ -44,7 +56,14 @@ export const ProfilePageClient = ({ initialFullName, initialBio }: ProfilePageCl
         .eq("id", user.id);
 
       if (updateError) {
-        setState({ loading: false, error: "Failed to update profile" });
+        // Check if it's a network error
+        if (updateError.message.toLowerCase().includes('network') || 
+            updateError.message.toLowerCase().includes('failed') ||
+            updateError.message.toLowerCase().includes('offline')) {
+          setState({ loading: false, error: "Network error. Please check your connection and try again." });
+        } else {
+          setState({ loading: false, error: "Failed to update profile" });
+        }
         return;
       }
 
@@ -53,7 +72,15 @@ export const ProfilePageClient = ({ initialFullName, initialBio }: ProfilePageCl
       // Refresh the page to show updated data
       router.refresh();
     } catch (err) {
-      setState({ loading: false, error: "An unexpected error occurred" });
+      // Handle network errors from catch block
+      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred";
+      if (errorMessage.toLowerCase().includes('network') || 
+          errorMessage.toLowerCase().includes('failed') ||
+          errorMessage.toLowerCase().includes('offline')) {
+        setState({ loading: false, error: "Network error. Please check your connection and try again." });
+      } else {
+        setState({ loading: false, error: errorMessage });
+      }
     }
   };
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireAuth } from "@/lib/auth/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/auth/SignOutButton";
+import { DashboardNav } from "@/components/shared/DashboardNav";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -39,18 +40,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
                 </div>
               )}
             </div>
-            <Link
-              href="/dashboard"
-              className="text-sm font-semibold text-slate-900"
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/profile"
-              className="text-sm font-medium text-slate-600 hover:text-slate-900"
-            >
-              Profile
-            </Link>
+            <DashboardNav />
           </nav>
           <SignOutButton />
         </div>

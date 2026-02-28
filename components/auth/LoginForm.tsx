@@ -46,9 +46,19 @@ export const LoginForm = ({ onSubmit, loading = false, error }: LoginFormProps) 
     event.preventDefault();
     setValidationError("");
 
+    // Check both fields are filled
+    if (!email.trim()) {
+      setValidationError("Email is required");
+      return;
+    }
+    if (!password.trim()) {
+      setValidationError("Password is required");
+      return;
+    }
+
     // Validate email format
     if (!isValidEmail(email)) {
-      setValidationError("Please enter a valid email address");
+      setValidationError("Email must be in format: user@example.com");
       return;
     }
 

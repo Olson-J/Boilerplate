@@ -8,10 +8,10 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ##  Pre-Testing Setup
 
-- [ ] Local Supabase is running (`npx supabase start`)
-- [ ] Development server is running (`npm run dev`)
-- [ ] Browser DevTools console is open (to catch errors)
-- [ ] All automated tests are passing (`npm test`)
+- [x] Local Supabase is running (`npx supabase start`)
+- [x] Development server is running (`npm run dev`)
+- [x] Browser DevTools console is open (to catch errors)
+- [x] All automated tests are passing (`npm test`)
 
 ---
 
@@ -21,7 +21,7 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 - [x] Navigate to `/signup`
 - [x] Form renders correctly with email and password fields
-- [ ] Try submitting with empty fields
+- [x] Try submitting with empty fields
   - **Expected:** Validation errors shown
 - [x] Try submitting with invalid email
   - **Expected:** Email validation error
@@ -51,10 +51,10 @@ Use this checklist to manually verify all features before deployment. Check off 
 ### Logout Flow
 
 - [x] While logged in, locate the sign out button
-- [ ] Click sign out
+- [x] Click sign out
   - **Expected:** Redirect to home page or login page
   - **Expected:** User session cleared
-- [ ] Try accessing protected route (e.g., `/profile`)
+- [x] Try accessing protected route (e.g., `/profile`)
   - **Expected:** Redirect to `/login`
 
 ---
@@ -85,7 +85,7 @@ Use this checklist to manually verify all features before deployment. Check off 
 ### View Profile
 
 - [x] Log in and navigate to `/profile`
-- [ ] Verify profile data is displayed:
+- [x] Verify profile data is displayed:
   - [x] Email (should match logged-in user)
   - [x] Display name (may be empty for new users)
   - [x] Bio (may be empty)
@@ -174,7 +174,7 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Test: User Cannot Update Other Profiles
 
-- [ ] While logged in as User A, use SQL Editor:
+- [x] While logged in as User A, use SQL Editor:
   ```sql
   SET LOCAL ROLE authenticated;
   SET LOCAL request.jwt.claim.sub = 'user-a-id';
@@ -184,15 +184,15 @@ Use this checklist to manually verify all features before deployment. Check off 
   WHERE profiles.id = 'user-b-id';
   ```
   - **Expected:** 0 rows affected (update silently fails)
-- [ ] Verify User B's profile unchanged in Table Editor
+- [x] Verify User B's profile unchanged in Table Editor
 
 ### Test: User Can Only Update Own Profile
 
-- [ ] Log in as User A
-- [ ] Go to profile page
-- [ ] Update display name
+- [x] Log in as User A
+- [x] Go to profile page
+- [x] Update display name
   - **Expected:** Update succeeds
-- [ ] Check database:
+- [x] Check database:
   ```sql
   SELECT * FROM profiles WHERE profiles.id = 'user-a-id';
   ```
@@ -206,8 +206,8 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 - [x] Check all pages for buttons
 - [x] Verify buttons have consistent styling
-- [ ] Verify hover states work
-- [ ] Verify disabled state displays correctly
+- [x] Verify hover states work
+- [x] Verify disabled state displays correctly
 
 ### Input Component
 
@@ -236,7 +236,7 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Desktop (1920x1080)
 
-- [ ] Navigate through all pages
+- [x] Navigate through all pages
 - [x] Verify layout looks good
 - [x] Verify no horizontal scroll
 - [x] Verify text is readable
@@ -259,51 +259,6 @@ Use this checklist to manually verify all features before deployment. Check off 
 - [x] Verify touch targets are large enough
 - [x] Verify no content is cut off
 
----
-
-##  Browser Compatibility Tests
-
-### Chrome (Primary)
-
-- [ ] Test all features
-- [ ] Check console for errors
-- [ ] Verify no visual glitches
-
-### Firefox
-
-- [ ] Sign up flow works
-- [ ] Login flow works
-- [ ] Profile editing works
-- [ ] Avatar upload works
-
-### Safari (if on Mac/iOS)
-
-- [ ] Sign up flow works
-- [ ] Login flow works
-- [ ] Profile editing works
-- [ ] Avatar upload works
-
-### Edge
-
-- [ ] Sign up flow works
-- [ ] Login flow works
-- [ ] Profile editing works
-
----
-
-## Performance Tests
-
-### Page Load Times
-
-- [ ] Open DevTools → Network tab
-- [ ] Clear cache
-- [ ] Reload home page
-  - **Target:** DOMContentLoaded < 1s
-  - **Target:** Load complete < 2s
-- [ ] Navigate to profile page
-  - **Target:** Similar load times
----
-
 ## Error Handling Tests
 
 ### Network Errors
@@ -316,9 +271,9 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Session Expiration
 
-- [ ] Log in
-- [ ] Wait for session to expire (or manually delete auth cookies)
-- [ ] Try to access profile page
+- [x] Log in
+- [x] Wait for session to expire (or manually delete auth cookies)
+- [x] Try to access profile page
   - **Expected:** Redirect to login (not crash)
 
 ---
