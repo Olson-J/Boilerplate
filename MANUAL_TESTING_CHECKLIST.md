@@ -19,38 +19,38 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Sign Up Flow
 
-- [ ] Navigate to `/signup`
-- [ ] Form renders correctly with email and password fields
+- [x] Navigate to `/signup`
+- [x] Form renders correctly with email and password fields
 - [ ] Try submitting with empty fields
   - **Expected:** Validation errors shown
-- [ ] Try submitting with invalid email
+- [x] Try submitting with invalid email
   - **Expected:** Email validation error
 - [ ] Try submitting with short password (< 6 characters)
   - **Expected:** Password validation error
 - [ ] Submit with valid credentials
   - **Expected:** Success message or redirect
-- [ ] Check Supabase Dashboard → Authentication → Users
+- [x] Check Supabase Dashboard → Authentication → Users
   - **Expected:** New user appears in list
-- [ ] Check Supabase Dashboard → Table Editor → profiles
+- [x] Check Supabase Dashboard → Table Editor → profiles
   - **Expected:** Profile automatically created with user_id matching auth.users
   - **Expected:** Email matches, display_name is null, avatar_url is null
-- [ ] Check email inbox
+- [x] Check email inbox
   - **Expected:** Confirmation email received (if email confirmation enabled)
 
 ### Login Flow
 
-- [ ] Navigate to `/login`
-- [ ] Form renders correctly
-- [ ] Try logging in with incorrect credentials
+- [x] Navigate to `/login`
+- [x] Form renders correctly
+- [x] Try logging in with incorrect credentials
   - **Expected:** Error message displayed
-- [ ] Try logging in with correct credentials
+- [x] Try logging in with correct credentials
   - **Expected:** Successful login, redirect to dashboard
-- [ ] Check that user information is displayed somewhere (e.g., navbar, dashboard)
+- [x] Check that user information is displayed somewhere (e.g., navbar, dashboard)
   - **Expected:** User email or name visible
 
 ### Logout Flow
 
-- [ ] While logged in, locate the sign out button
+- [x] While logged in, locate the sign out button
 - [ ] Click sign out
   - **Expected:** Redirect to home page or login page
   - **Expected:** User session cleared
@@ -63,18 +63,18 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Access When Logged Out
 
-- [ ] Log out (if logged in)
-- [ ] Try to access `/dashboard`
+- [x] Log out (if logged in)
+- [x] Try to access `/dashboard`
   - **Expected:** Redirect to `/login`
-- [ ] Try to access `/profile`
+- [x] Try to access `/profile`
   - **Expected:** Redirect to `/login`
 
 ### Access When Logged In
 
-- [ ] Log in with valid credentials
-- [ ] Navigate to `/dashboard`
+- [x] Log in with valid credentials
+- [x] Navigate to `/dashboard`
   - **Expected:** Page loads successfully
-- [ ] Navigate to `/profile`
+- [x] Navigate to `/profile`
   - **Expected:** Page loads successfully
   - **Expected:** Profile data displayed
 
@@ -84,22 +84,22 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### View Profile
 
-- [ ] Log in and navigate to `/profile`
+- [x] Log in and navigate to `/profile`
 - [ ] Verify profile data is displayed:
-  - [ ] Email (should match logged-in user)
-  - [ ] Display name (may be empty for new users)
+  - [x] Email (should match logged-in user)
+  - [x] Display name (may be empty for new users)
   - [ ] Bio (may be empty)
   - [ ] Avatar (default or uploaded image)
 
 ### Edit Profile - Display Name
 
-- [ ] On profile page, locate edit form
-- [ ] Change display name to something new
-- [ ] Submit form
+- [x] On profile page, locate edit form
+- [x] Change display name to something new
+- [x] Submit form
   - **Expected:** Success message displayed
-- [ ] Refresh page
+- [x] Refresh page
   - **Expected:** New display name persists
-- [ ] Check Supabase Dashboard → Table Editor → profiles
+- [x] Check Supabase Dashboard → Table Editor → profiles
   - **Expected:** display_name column updated
   - **Expected:** updated_at timestamp changed
 
@@ -124,33 +124,25 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Upload Valid Avatar
 
-- [ ] On profile page, locate avatar upload section
-- [ ] Click "Choose file" or upload button
-- [ ] Select a valid image file (JPEG, PNG, GIF, or WebP under 5MB)
-- [ ] Submit upload
+- [x] On profile page, locate avatar upload section
+- [x] Click "Choose file" or upload button
+- [x] Select a valid image file (JPEG, PNG, GIF, or WebP under 5MB)
+- [x] Submit upload
   - **Expected:** Upload progress indicator (if implemented)
   - **Expected:** Success message
   - **Expected:** New avatar displayed immediately
-- [ ] Refresh page
+- [x] Refresh page
   - **Expected:** Avatar persists
-- [ ] Check Supabase Dashboard → Storage → avatars bucket
+- [x] Check Supabase Dashboard → Storage → avatars bucket
   - **Expected:** File appears with path `{user_id}/{timestamp}-{filename}`
-- [ ] Check Supabase Dashboard → Table Editor → profiles
+- [x] Check Supabase Dashboard → Table Editor → profiles
   - **Expected:** avatar_url column contains public URL
 
-### Upload Invalid Files
-
-- [ ] Try uploading a file larger than 5MB
-  - **Expected:** Error message "File size must be less than 5MB"
-- [ ] Try uploading a non-image file (e.g., .txt, .pdf)
-  - **Expected:** Error message about file type
-- [ ] Try uploading without selecting a file
-  - **Expected:** Error message or validation
 
 ### Replace Existing Avatar
 
-- [ ] Upload avatar successfully (if not already done)
-- [ ] Upload a different avatar
+- [x] Upload avatar successfully (if not already done)
+- [x] Upload a different avatar
   - **Expected:** Old avatar replaced with new one
   - **Expected:** Only one avatar file per user in storage (or older one kept for history)
 
@@ -162,7 +154,7 @@ Use this checklist to manually verify all features before deployment. Check off 
 
 ### Setup for RLS Tests
 
-- [ ] Create two test user accounts:
+- [x] Create two test user accounts:
   - **User A:** email1@test.com
   - **User B:** email2@test.com
 

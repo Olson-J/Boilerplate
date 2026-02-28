@@ -7,6 +7,7 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 
 type ProfilePageClientProps = {
   initialFullName: string;
+  initialBio: string;
 };
 
 type SubmitState = {
@@ -15,11 +16,11 @@ type SubmitState = {
   success?: string;
 };
 
-export const ProfilePageClient = ({ initialFullName }: ProfilePageClientProps) => {
+export const ProfilePageClient = ({ initialFullName, initialBio }: ProfilePageClientProps) => {
   const [state, setState] = useState<SubmitState>({ loading: false });
   const router = useRouter();
 
-  const handleSubmit = async ({ fullName }: { fullName: string }) => {
+  const handleSubmit = async ({ fullName, bio }: { fullName: string; bio: string }) => {
     setState({ loading: true, error: undefined, success: undefined });
 
     try {
@@ -39,7 +40,7 @@ export const ProfilePageClient = ({ initialFullName }: ProfilePageClientProps) =
       // Update profile
       const { error: updateError } = await supabase
         .from("profiles")
-        .update({ full_name: fullName })
+        .update({ full_name: fullName, bio })
         .eq("id", user.id);
 
       if (updateError) {
@@ -59,6 +60,7 @@ export const ProfilePageClient = ({ initialFullName }: ProfilePageClientProps) =
   return (
     <ProfileForm
       initialFullName={initialFullName}
+      initialBio={initialBio}
       onSubmit={handleSubmit}
       loading={state.loading}
       error={state.error}

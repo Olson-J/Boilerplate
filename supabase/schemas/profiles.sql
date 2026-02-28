@@ -3,7 +3,8 @@
 create table public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   email text not null,
-  full_name text,
+  full_name text constraint full_name_length_check check (char_length(full_name) <= 50),
+  bio text constraint bio_length_check check (char_length(bio) <= 160),
   avatar_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
