@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ProfileForm } from "@/components/auth/ProfileForm";
 import { createSupabaseClient } from "@/lib/supabase/client";
 
@@ -16,6 +17,7 @@ type SubmitState = {
 
 export const ProfilePageClient = ({ initialFullName }: ProfilePageClientProps) => {
   const [state, setState] = useState<SubmitState>({ loading: false });
+  const router = useRouter();
 
   const handleSubmit = async ({ fullName }: { fullName: string }) => {
     setState({ loading: true, error: undefined, success: undefined });
@@ -46,6 +48,9 @@ export const ProfilePageClient = ({ initialFullName }: ProfilePageClientProps) =
       }
 
       setState({ loading: false, success: "Profile updated successfully!" });
+      
+      // Refresh the page to show updated data
+      router.refresh();
     } catch (err) {
       setState({ loading: false, error: "An unexpected error occurred" });
     }

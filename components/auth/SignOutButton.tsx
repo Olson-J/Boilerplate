@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
 
@@ -9,6 +10,12 @@ type SignOutButtonProps = {
 
 export const SignOutButton = ({ className }: SignOutButtonProps) => {
   const { signOut, loading } = useAuth();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/login");
+  };
 
   return (
     <Button
@@ -18,7 +25,7 @@ export const SignOutButton = ({ className }: SignOutButtonProps) => {
       loadingLabel="Signing out"
       className={className}
       onClick={() => {
-        void signOut();
+        void handleSignOut();
       }}
     >
       Sign out
