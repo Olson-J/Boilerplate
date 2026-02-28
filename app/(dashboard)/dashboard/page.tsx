@@ -1,9 +1,18 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { requireAuth } from "@/lib/auth/server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage() {
   const user = await requireAuth();
+  const supabase = await createSupabaseServerClient();
+
+  // Fetch profile to get full name
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("id", user.id)
+    .single();
 
   return (
     <main className="min-h-screen bg-slate-50 px-6 py-16">
@@ -12,7 +21,9 @@ export default async function DashboardPage() {
           <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
             Dashboard
           </p>
-          <h1 className="text-3xl font-semibold text-slate-900">Dashboard</h1>
+          <h1 className="text-3xl font-semibold text-slate-900">
+            {profile?.full_name ? `Welcome, ${profile.full_name}` : "Dashboard"}
+          </h1>
           <p className="text-slate-600">
             Signed in as <span className="font-medium">{user.email}</span>
           </p>
