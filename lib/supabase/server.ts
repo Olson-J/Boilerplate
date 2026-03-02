@@ -31,11 +31,10 @@ export function createSupabaseServerClient() {
         const cookieStore = await cookies();
         return cookieStore.getAll();
       },
-      async setAll(cookiesToSet) {
-        const cookieStore = await cookies();
-        cookiesToSet.forEach(({ name, value, options }) => {
-          cookieStore.set(name, value, options);
-        });
+      async setAll() {
+        // Cookies cannot be modified in regular Server Components.
+        // Cookie modifications happen in middleware or done during auth flow.
+        // See proxy.ts for token refresh logic.
       },
     },
   });

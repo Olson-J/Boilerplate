@@ -266,7 +266,7 @@ Use this checklist to manually verify all features before deployment. Check off 
 - [x] Turn off internet (or use DevTools → Offline mode)
 - [x] Try to log in
   - **Expected:** User-friendly error message (not raw API error)
-- [ ] Try to update profile
+- [x] Try to update profile
   - **Expected:** Network error message
 
 ### Session Expiration

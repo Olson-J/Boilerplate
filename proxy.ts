@@ -1,11 +1,25 @@
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-// Middleware function for token refresh (currently unused but available for route protection)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function proxy(_request: NextRequest) {
-  const response = NextResponse.next();
+/**
+ * Proxy handler for Supabase session refresh and token management.
+ * 
+ * This proxy:
+ * 1. Reads the current session from cookies
+ * 2. Refreshes the session if needed (30 seconds before expiration)
+ * 3. Updates cookies with refreshed session tokens
+ * 
+ * This is the ONLY place where cookies can be modified in Next.js 13+ App Router.
+ * Regular Server Components can only READ cookies, not modify them.
+ */
+export async function proxy(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -25,7 +39,7 @@ export async function proxy(_request: NextRequest) {
     }
   );
 
-  // Refresh session if expired - 30 seconds before expiration
+  // This will refresh the session if needed (30 seconds before expiration)
   await supabase.auth.getUser();
 
   return response;
