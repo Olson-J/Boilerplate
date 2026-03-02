@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProfileForm } from "@/components/auth/ProfileForm";
+import { DeleteAccountButton } from "@/components/auth/DeleteAccountButton";
 import { createSupabaseClient } from "@/lib/supabase/client";
 
 type ProfilePageClientProps = {
@@ -85,13 +86,16 @@ export const ProfilePageClient = ({ initialFullName, initialBio }: ProfilePageCl
   };
 
   return (
-    <ProfileForm
-      initialFullName={initialFullName}
-      initialBio={initialBio}
-      onSubmit={handleSubmit}
-      loading={state.loading}
-      error={state.error}
-      success={state.success}
-    />
+    <div className="space-y-6">
+      <ProfileForm
+        initialFullName={initialFullName}
+        initialBio={initialBio}
+        onSubmit={handleSubmit}
+        loading={state.loading}
+        error={state.error}
+        success={state.success}
+      />
+      <DeleteAccountButton />
+    </div>
   );
 };

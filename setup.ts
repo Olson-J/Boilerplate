@@ -79,18 +79,20 @@ function isSupabaseRunning(): boolean {
   }
 }
 
-function extractSupabaseCredentials(): { url: string; anonKey: string } | null {
+function extractSupabaseCredentials(): { url: string; anonKey: string; serviceRoleKey: string } | null {
   try {
     const status = runCommand('npx supabase status', 'Get Supabase status');
     
-    // Parse status output for API URL and anon key
+    // Parse status output for API URL, anon key, and service role key
     const urlMatch = status.match(/API URL: (.+)/);
-    const keyMatch = status.match(/anon key: (.+)/);
+    const anonKeyMatch = status.match(/anon key: (.+)/);
+    const serviceRoleKeyMatch = status.match(/service_role key: (.+)/);
     
-    if (urlMatch && keyMatch) {
+    if (urlMatch && anonKeyMatch && serviceRoleKeyMatch) {
       return {
         url: urlMatch[1].trim(),
-        anonKey: keyMatch[1].trim(),
+        anonKey: anonKeyMatch[1].trim(),
+        serviceRoleKey: serviceRoleKeyMatch[1].trim(),
       };
     }
     
@@ -101,9 +103,9 @@ function extractSupabaseCredentials(): { url: string; anonKey: string } | null {
   }
 }
 
-function updateEnvFile(url: string, anonKey: string) {
+function updateEnvFile(url: string, anonKey: string, serviceRoleKey: string) {
   const envPath = join(process.cwd(), '.env.local');
-  const envExamplePath = join(process.cwd(), '.env.local.example');
+  const envExamplePath = join(process.cwd(), '.env.example');
   
   let envContent = '';
   
@@ -116,6 +118,7 @@ function updateEnvFile(url: string, anonKey: string) {
   const vars = {
     NEXT_PUBLIC_SUPABASE_URL: url,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: anonKey,
+    SUPABASE_SERVICE_ROLE_KEY: serviceRoleKey,
   };
   
   Object.entries(vars).forEach(([key, value]) => {
@@ -246,7 +249,7 @@ async function main() {
   logStep(6, 'Configuring environment variables...');
   
   try {
-    updateEnvFile(credentials.url, credentials.anonKey);
+    updateEnvFile(credentials.url, credentials.anonKey, credentials.serviceRoleKey);
   } catch (error: any) {
     logError(`Failed to update .env.local: ${error.message}`);
     process.exit(1);

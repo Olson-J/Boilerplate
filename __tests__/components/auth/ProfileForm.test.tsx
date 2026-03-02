@@ -75,6 +75,7 @@ describe("ProfileForm", () => {
 
     expect(handleSubmit).toHaveBeenCalledWith({
       fullName: "Ada Lovelace",
+      bio: "",
       avatarFile: file,
     });
   });

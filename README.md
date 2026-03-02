@@ -61,11 +61,14 @@ If you prefer to set up manually or need to troubleshoot:
 
 4. **Configure environment variables**
    
-   Create `.env.local` file:
+   Create `.env.local` file (or copy from `.env.example`):
    ```bash
    NEXT_PUBLIC_SUPABASE_URL=<API URL from status>
    NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key from status>
+   SUPABASE_SERVICE_ROLE_KEY=<service_role key from status>
    ```
+   
+   **Important:** The `SUPABASE_SERVICE_ROLE_KEY` is required for admin operations like account deletion. Keep this secret and never expose it in client-side code!
 
 5. **Run database migrations**
    ```bash
@@ -197,6 +200,37 @@ function MyComponent() {
 
 ---
 
+## Key Features
+
+### User Authentication
+- Email/password signup and login
+- Automatic profile creation via database trigger
+- Protected routes with middleware
+- Server-side and client-side auth utilities
+
+### Profile Management
+- User profile with full name and bio
+- Avatar upload to Supabase Storage
+- Real-time profile updates
+- **Account deletion** - Users can permanently delete their accounts
+  - Implemented with server-side API route using service role key
+  - Cascading deletion removes user profile automatically
+  - Confirmation dialog prevents accidental deletions
+
+### Security
+- Row Level Security (RLS) policies on all tables
+- Users can only view/edit their own data
+- Service role key kept secret (server-side only)
+- Proper authentication checks on all protected routes
+
+### Testing
+- Comprehensive test suite with Vitest
+- Unit tests for utilities and hooks
+- Component tests with React Testing Library
+- Integration tests for auth flows and RLS policies
+
+---
+
 ## Available Scripts
 
 ```bash
@@ -239,7 +273,9 @@ npx supabase db push
    ```
    NEXT_PUBLIC_SUPABASE_URL=<your-production-url>
    NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-production-anon-key>
+   SUPABASE_SERVICE_ROLE_KEY=<your-production-service-role-key>
    ```
+   **Important:** Get the `SUPABASE_SERVICE_ROLE_KEY` from your Supabase project dashboard (Settings > API). This is required for account deletion and other admin operations.
 4. Deploy
 
 ### Platform-Specific Considerations
