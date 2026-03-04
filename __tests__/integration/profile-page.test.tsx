@@ -53,6 +53,13 @@ vi.mock("@/lib/supabase/server", () => ({
   createSupabaseServerClient: vi.fn(() => mockSupabaseClient),
 }));
 
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+    refresh: vi.fn(),
+  })),
+}));
+
 import ProfilePage from "../../app/(dashboard)/profile/page";
 
 describe("Profile page", () => {

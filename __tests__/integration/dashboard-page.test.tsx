@@ -27,7 +27,7 @@ describe("Dashboard page", () => {
     renderWithProviders(await DashboardPage());
 
     expect(
-      screen.getByRole("heading", { name: "Dashboard" })
+      screen.getByRole("heading", { name: "Welcome, Test User" })
     ).toBeInTheDocument();
     expect(screen.getByText("user@example.com")).toBeInTheDocument();
   });
