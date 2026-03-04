@@ -4,6 +4,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { DashboardNav } from "@/components/shared/DashboardNav";
 
+export const dynamic = 'force-dynamic';
+
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };

@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/Card";
 import { requireAuth } from "@/lib/auth/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const user = await requireAuth();
   const supabase = await createSupabaseServerClient();

@@ -3,6 +3,8 @@ import { ProfilePageClient } from "@/components/auth/ProfilePageClient";
 import { requireAuth } from "@/lib/auth/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 // Default avatar SVG as a data URL
 const DEFAULT_AVATAR_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='35' r='15' fill='%2394a3b8'/%3E%3Cpath d='M 20 80 Q 20 60 50 60 Q 80 60 80 80' fill='%2394a3b8'/%3E%3C/svg%3E`;
 
