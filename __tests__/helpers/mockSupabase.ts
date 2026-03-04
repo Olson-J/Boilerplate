@@ -6,10 +6,10 @@ type MockAuthResponse = {
 };
 
 type MockSupabaseAuth = {
-  getUser: ReturnType<typeof vi.fn>;
-  signInWithPassword: ReturnType<typeof vi.fn>;
-  signUp: ReturnType<typeof vi.fn>;
-  signOut: ReturnType<typeof vi.fn>;
+  getUser: ReturnType<typeof vi.fn<[], Promise<MockAuthResponse>>>;
+  signInWithPassword: ReturnType<typeof vi.fn<[], Promise<MockAuthResponse>>>;
+  signUp: ReturnType<typeof vi.fn<[], Promise<MockAuthResponse>>>;
+  signOut: ReturnType<typeof vi.fn<[], Promise<{ error: null }>>>;
 };
 
 type MockSupabaseClient = {
@@ -24,10 +24,10 @@ export const createMockSupabaseClient = (): MockSupabaseClient => {
 
   return {
     auth: {
-      getUser: vi.fn(async () => mockResponse),
-      signInWithPassword: vi.fn(async () => mockResponse),
-      signUp: vi.fn(async () => mockResponse),
-      signOut: vi.fn(async () => ({ error: null })),
+      getUser: vi.fn<[], Promise<MockAuthResponse>>(async () => mockResponse),
+      signInWithPassword: vi.fn<[], Promise<MockAuthResponse>>(async () => mockResponse),
+      signUp: vi.fn<[], Promise<MockAuthResponse>>(async () => mockResponse),
+      signOut: vi.fn<[], Promise<{ error: null }>>(async () => ({ error: null })),
     },
   };
 };
