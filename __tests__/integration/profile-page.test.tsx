@@ -109,6 +109,6 @@ describe("Profile page", () => {
     // Wait for async operations
     await new Promise((resolve) => setTimeout(resolve, 200));
 
-    expect(screen.getByText("Profile updated.")).toBeInTheDocument();
+    expect(screen.getByText("Profile updated successfully!")).toBeInTheDocument();
   });
 });
