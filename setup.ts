@@ -364,7 +364,7 @@ async function main() {
   
   // Success message
   log('\n╔═══════════════════════════════════════════════════════════╗', 'green');
-  log('║                 Setup Complete! 🎉                        ║', 'green');
+  log('║                 Setup Complete!                           ║', 'green');
   log('╚═══════════════════════════════════════════════════════════╝', 'green');
   
   log('\nNext steps:', 'bright');
@@ -374,7 +374,7 @@ async function main() {
   log('     http://localhost:3000', 'cyan');
   log('\n  3. View Supabase Studio:', 'reset');
   log('     http://localhost:54323', 'cyan');
-  log('\n  4. Start building! 🚀', 'reset');
+  log('\n  4. Start building!', 'reset');
   
   log('\nUseful commands:', 'bright');
   log('  npm test              - Run tests', 'reset');

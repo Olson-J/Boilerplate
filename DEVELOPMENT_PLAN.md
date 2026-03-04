@@ -5,1135 +5,158 @@
 
 ---
 
-## 📋 Project Overview
+## Project Overview
 
-This plan outlines the development of a production-ready Next.js + Supabase starter application with authentication, automatic profile creation, and proper Row Level Security policies. The project follows a **test-first approach** and emphasizes best practices for modern web development.
+This project delivers a production-ready Next.js + Supabase starter with:
+- Auth (signup, login, logout)
+- Automatic profile creation
+- Row Level Security (RLS) policies
+- Avatar uploads via Supabase Storage
+- Automated setup and migration workflow
+- Comprehensive automated + manual testing support
 
----
-
-## 📈 Progress Tracking
-
-**Current Status:** Phase 12 Complete ✅ - Ready for Deployment
-
-| Phase | Status | Completion | Notes |
-|-------|--------|-----------|-------|
-| Phase 1: Project Foundation | ✅ COMPLETE | 100% | Project structure, config, and code quality setup finished. All verification checks passed. |
-| Phase 2: Testing Framework | ✅ COMPLETE | 100% | Vitest configured, helpers created, and example tests passing |
-| Phase 3: Supabase Config | ✅ COMPLETE | 100% | Supabase config reviewed, types added, middleware + tests passing |
-| Phase 4: Auth Utilities | ✅ COMPLETE | 100% | Server auth utilities + useAuth hook with tests |
-| Phase 5: Database Schema | ✅ COMPLETE | 100% | Schema, migrations, and integration tests complete |
-| Phase 6: UI Components | ✅ COMPLETE | 100% | Core UI + auth components with tests |
-| Phase 7: Page Implementation | ✅ COMPLETE | 100% | Public + protected pages and layouts added |
-| Phase 8: Avatar Upload | ✅ COMPLETE | 100% | File upload utility + storage config complete - 53 tests passing |
-| Phase 9: Setup Script | ✅ COMPLETE | 100% | Automated setup.ts script with full documentation |
-| Phase 10: GitHub Actions | ✅ COMPLETE | 100% | CI/CD workflow for automatic migrations |
-| Phase 11: Documentation | ✅ COMPLETE | 100% | ARCHITECTURE.md, DATABASE.md, DEPLOYMENT.md created. JSDoc comments added |
-| Phase 12: Final QA | ✅ COMPLETE | 100% | All tests passing, code quality verified, manual testing checklist created |
-| Phase 13: Deployment | ⏳ READY | 0% | Deployment guide created, ready to deploy when needed |
-
-**Overall Progress:** 12/13 phases complete (92.3%) — Project Ready for Deployment 🚀
+Development followed a test-first approach and strict TypeScript + App Router conventions.
 
 ---
 
-## 📝 Phase 1 Summary
+## Current Status
 
-### ✅ What Was Completed
+**Overall Status:**  Development complete, deployed to production, and live
 
-**Project Foundation & Configuration - COMPLETE**
-
-All tasks for Phase 1 have been successfully completed and verified:
-
-- ✅ Created complete directory structure:
-  - `components/` (ui, auth, shared subdirectories) with README
-  - `lib/` (hooks, utils, types, auth, supabase subdirectories) with README
-  - `__tests__/` (unit, components, integration, helpers) with README
-  - `supabase/schemas/` with README
-  - `app/` updated with new metadata
-
-- ✅ Configuration files added:
-  - `.prettierrc` - Code formatting rules
-  - `.prettierignore` - Formatting ignore patterns
-  - `.env.local.example` - Environment template
-  - Updated `package.json` with 10 npm scripts
-
-- ✅ Code quality improvements:
-  - Fixed `lib/supabase/server.ts` - Async cookie handling corrected
-  - Fixed `lib/supabase/client.ts` - Added "use client" directive
-  - Fixed `proxy.ts` - Middleware regex and async patterns corrected
-  - Updated `lib/supabase.js` - Deprecated with migration guidance
-
-- ✅ All verification checks passed:
-  - `npm run type-check` ✅
-  - `npm run lint` ✅
-  - `npm run build` ✅
+| Area | Status | Notes |
+|---|---|---|
+| Core app features |  Complete | Auth, profile management, avatar upload, account deletion |
+| Database & security |  Complete | Declarative schemas, migrations, RLS policies |
+| Testing |  Complete | Unit, component, integration suites passing |
+| Setup automation | Complete | Fresh setup validated from clean state |
+| Documentation | Complete | README + ARCHITECTURE + DATABASE + DEPLOYMENT + testing docs |
+| Deployment execution | Complete | All 5 phases executed; production Supabase + Vercel + migrations live |
 
 ---
 
-## 📝 Phase 2 Summary
+## Phase Summary (Condensed)
 
-### ✅ What Was Completed
-
-**Testing Framework Setup - COMPLETE**
-
-- ✅ Installed testing dependencies with Node-compatible versions:
-  - `vitest@1.6.0`, `vite@5.4.11`, `jsdom@22.1.0`
-  - React Testing Library and user-event utilities
-- ✅ Added test configuration and helpers:
-  - `vitest.config.ts` with `@` alias resolution
-  - `__tests__/helpers/setupTests.ts` for jest-dom
-  - `__tests__/helpers/testUtils.tsx` render helper
-  - `__tests__/helpers/mockSupabase.ts` mock client
-- ✅ Added example tests:
-  - Component test: `__tests__/components/Greeting.test.tsx`
-  - Utility test: `__tests__/unit/formatDate.test.ts`
-  - Auth example: `__tests__/integration/auth-flow.test.ts`
-- ✅ Tests verified: `npm run test` passes
-
-**Notes:**
-- Vitest prints a Vite CJS deprecation warning; safe to ignore for now. We can revisit once Node is updated.
+| Phase | Outcome |
+|---|---|
+| 1. Foundation | Project structure, TypeScript, lint/format/build baseline established |
+| 2. Testing setup | Vitest + RTL configured with shared test helpers |
+| 3. Supabase configuration | SSR clients, middleware/proxy auth refresh, typed DB support |
+| 4. Auth utilities | getUser, requireAuth, and useAuth patterns completed |
+| 5. Schema & migrations | Declarative schemas + generated migrations + trigger/RLS coverage |
+| 6. UI components | Reusable UI/auth components with tests |
+| 7. Pages/layouts | Public + protected routes implemented |
+| 8. Avatar upload | Storage bucket/policies + upload utility integrated |
+| 9. Setup script | End-to-end setup script with environment + migration + test steps |
+| 10. GitHub Actions | Migration workflow for production database updates |
+| 11. Documentation | Core architecture/database/deployment docs completed |
+| 12. Final QA | Full suite validated, quality checks and manual checklist aligned |
 
 ---
 
-## 📝 Phase 3 Summary
+## Final Testing & QA Results
 
-### ✅ What Was Completed
+### Automated Testing
+-  Unit tests passing
+-  Component tests passing
+-  Integration tests passing (including profile trigger and RLS scenarios)
 
-**Supabase Configuration & Client Setup - COMPLETE**
+### Fresh Setup Validation (Completed)
+Validated from clean state (without deleting supabase/):
+1. Removed node_modules/ and .env.local
+2. Reinstalled dependencies
+3. Ran setup script
+4. Confirmed migrations + tests complete successfully
 
-- ✅ Reviewed [supabase/config.toml](supabase/config.toml) and enabled declarative schema paths
-- ✅ Documented Supabase CLI setup and local workflow in [README.md](README.md)
-- ✅ Added Database type scaffolding in [lib/types/database.ts](lib/types/database.ts)
-- ✅ Typed Supabase clients with `Database` generics
-- ✅ Created middleware bridge in [middleware.ts](middleware.ts)
-- ✅ Added unit tests for server/client/middleware helpers
-- ✅ Tests verified: `npm run test` passes
-
-**Notes:**
-- `middleware.ts` delegates to [proxy.ts](proxy.ts) for token refresh.
-- Database types should be regenerated after schemas are defined:
-  `npx supabase gen types typescript --local > lib/types/database.ts`
-
----
-
-## 📝 Phase 4 Summary
-
-### ✅ What Was Completed
-
-**Authentication Utilities - COMPLETE**
-
-- ✅ Added server auth utilities in [lib/auth/server.ts](lib/auth/server.ts):
-  - `getUser()` returns current user or null; throws on Supabase errors
-  - `requireAuth()` throws when unauthenticated
-- ✅ Added client auth hook in [lib/hooks/useAuth.ts](lib/hooks/useAuth.ts):
-  - Manages user, loading, error state
-  - Subscribes to auth state changes
-  - Exposes `signOut()` helper
-- ✅ Added tests:
-  - [__tests__/unit/auth/server.test.ts](__tests__/unit/auth/server.test.ts)
-  - [__tests__/hooks/useAuth.test.tsx](__tests__/hooks/useAuth.test.tsx)
-
----
-
-## 📝 Phase 5 Summary (Complete)
-
-### ✅ What Was Completed
-
-- ✅ Created declarative schema in [supabase/schemas/profiles.sql](supabase/schemas/profiles.sql)
-- ✅ Added `profiles` table, triggers, and RLS policies
-- ✅ Generated migration: `npx supabase db diff -f create_profiles_table`
-- ✅ Applied migration: `npx supabase db reset`
-- ✅ Added integration tests for profile creation and RLS policies
-
-**Note:** `npx supabase db diff` is blocked by a WSL service connection error (0x8007274c). Will retry once WSL/Supabase CLI connectivity is restored.
+### Issues Resolved During Final QA
+-  Next.js dynamic rendering errors fixed for cookie-dependent routes
+  - Added dynamic route opt-in on relevant auth/dashboard pages/layouts.
+-  Setup credential extraction fixed for current Supabase CLI output
+  - Uses npx supabase status --output env and reads JWT-based ANON_KEY + SERVICE_ROLE_KEY.
+-  Post-reset credential refresh added in setup
+  - .env.local refresh occurs after supabase db reset.
+-  Setup resilience improved
+  - Credential extraction retries while local services restart after reset.
+-  Integration test stability improved
+  - Updated tests/mocks to reflect current page rendering and router usage.
 
 ---
 
 ## Key Deliverables
 
-1.  Fully functional Next.js 13+ application with TypeScript
-2.  Supabase integration with authentication
-3.  Automatic profile creation via database triggers
-4.  Row Level Security policies on all tables
-5.  Automated setup script for project initialization
-6.  Comprehensive test suite (unit, component, integration)
-7.  Complete documentation (README + inline comments)
-8.  GitHub Actions workflow for migrations
+-  Authentication and protected routing patterns
+-  Profile model with automatic creation trigger
+-  RLS policies and integration tests
+-  Supabase Storage avatar support
+-  Account deletion flow (server-side)
+-  Setup automation (setup.ts)
+-  CI migration workflow
+-  Consolidated project documentation
 
 ---
 
-##  Development Phases
+## Architecture & Process Decisions
 
-### Phase 1: Project Foundation & Configuration
-**Goal:** Set up the development environment and project structure
+### Technical Decisions
+- Use @supabase/ssr for server/client Supabase integration.
+- Keep all schema changes in declarative SQL + generated migrations.
+- Enforce strict TypeScript and App Router conventions.
+- Use server utilities (getUser, requireAuth) + client hook (useAuth) as standard auth interfaces.
 
-#### 1.1 Initial Project Setup
-- [ ] Verify Next.js application is properly configured
-- [ ] Ensure TypeScript strict mode is enabled in `tsconfig.json`
-- [ ] Review and update `package.json` dependencies
-- [ ] Set up ESLint and Prettier configurations
-- [ ] Create `.env.local.example` template file
-
-**Files to Review/Create:**
-- `package.json`
-- `tsconfig.json`
-- `.eslintrc.json`
-- `.prettierrc`
-- `.env.local.example`
-
-#### 1.2 Directory Structure Setup
-- [ ] Create `components/` directory structure:
-  - `components/ui/` - Reusable UI components
-  - `components/auth/` - Authentication components
-  - `components/shared/` - Shared feature components
-- [ ] Create `lib/` directory structure:
-  - `lib/hooks/` - Custom React hooks
-  - `lib/utils/` - Pure utility functions
-  - `lib/types/` - Shared TypeScript types
-  - `lib/auth/` - Auth utility functions
-- [ ] Create `__tests__/` directory structure:
-  - `__tests__/unit/` - Pure function tests
-  - `__tests__/components/` - Component tests
-  - `__tests__/integration/` - Integration tests
-  - `__tests__/helpers/` - Test utilities and mocks
-- [ ] Create `supabase/schemas/` directory for declarative schemas
-
-**Deliverable:** Well-organized project structure following [Project Rules](.github/copilot-instructions.md#-code-organization)
+### Testing Decisions
+- Keep test pyramid coverage: unit + component + integration.
+- Use Supabase integration tests for trigger and RLS behavior (not just mocks).
+- Validate setup script as part of release readiness.
 
 ---
 
-### Phase 2: Testing Framework Setup
-**Goal:** Establish testing infrastructure BEFORE writing application code
+## Deployment Readiness Checklist
 
-#### 2.1 Install Testing Dependencies
-- [x] Install Vitest (or Jest)
-- [x] Install React Testing Library
-- [x] Install testing utilities (@testing-library/user-event, @testing-library/jest-dom)
-- [x] Configure Vitest/Jest configuration file
+### Pre-Deployment (Completed)
+-  Tests passing 
+-  Type safety/lint baseline in place 
+-  Migrations and schema workflow documented 
+-  Environment variables documented (local + production) 
+-  GitHub Actions migration workflow configured 
 
-**Commands:**
-```bash
-npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
-```
+### Deployment Execution (Completed)
+-  Production Supabase project created
+-  Database migrations applied to production
+-  Environment variables configured in Vercel
+-  Production deployment live on Vercel
+-  Auth and profile flows tested in production
 
-#### 2.2 Configure Testing Environment
-- [x] Create `vitest.config.ts` (or `jest.config.js`)
-- [x] Set up test utilities in `__tests__/helpers/`
-- [x] Create mock Supabase client for testing
-- [x] Add test scripts to `package.json`:
-  - `test` - Run all tests
-  - `test:watch` - Watch mode
-  - `test:coverage` - Generate coverage report
-
-**Files to Create:**
-- `vitest.config.ts`
-- `__tests__/helpers/mockSupabase.ts`
-- `__tests__/helpers/testUtils.tsx`
-
-#### 2.3 Write Example Tests
-- [x] Create example component test (`__tests__/components/Greeting.test.tsx`)
-- [x] Create example utility test (`__tests__/unit/formatDate.test.ts`)
-- [x] Create example integration test stub for auth flow (`__tests__/integration/auth-flow.test.ts`)
-- [x] Verify all tests run successfully
-
-**Deliverable:** Functional testing framework with example tests passing
+**Project Status:** Live in production (March 4, 2026)
 
 ---
 
-### Phase 3: Supabase Configuration & Client Setup
-**Goal:** Configure Supabase for local development and create client utilities
-
-#### 3.1 Supabase Local Setup
-- [x] Verify Supabase CLI is installed
-- [x] Review existing `supabase/config.toml`
-- [x] Document Supabase initialization commands in README
-- [x] Create Supabase client type definitions
-
-**Files to Review:**
-- `supabase/config.toml`
-
-#### 3.2 Supabase Client Utilities (Test-First)
-**⚠️ Write tests BEFORE implementation**
-
-- [x] **TEST:** Write tests for server-side Supabase client
-  - Test cookie handling
-  - Test session retrieval
-  - Test error handling
-- [x] **IMPLEMENT:** Create `lib/supabase/server.ts`
-  - Use `@supabase/ssr`
-  - Implement cookie-based auth
-  - Handle server-side session management
-
-- [x] **TEST:** Write tests for client-side Supabase client
-  - Test client initialization
-  - Test browser storage
-- [x] **IMPLEMENT:** Create `lib/supabase/client.ts`
-  - Use `@supabase/ssr`
-  - Implement browser-based auth
-
-- [x] **TEST:** Write tests for middleware
-  - Test token refresh logic
-  - Test route protection
-- [x] **IMPLEMENT:** Update/create `middleware.ts`
-  - Implement automatic token refresh
-  - Add route protection logic
-
-**Files to Create/Update:**
-- `__tests__/unit/supabase/server.test.ts`
-- `__tests__/unit/supabase/client.test.ts`
-- `__tests__/unit/middleware.test.ts`
-- `lib/supabase/server.ts` (update if exists)
-- `lib/supabase/client.ts` (update if exists)
-- `middleware.ts`
-
-**Deliverable:** Properly configured Supabase clients with passing tests
-
----
-
-### Phase 4: Authentication Utilities (Test-First)
-**Goal:** Create reusable authentication patterns
-
-#### 4.1 Server-Side Auth Utilities
-**⚠️ Write tests BEFORE implementation**
-
-- [x] **TEST:** Write tests for `getUser()` function
-  - Test successful user retrieval
-  - Test handling null user
-  - Test error cases
-- [x] **IMPLEMENT:** Create `lib/auth/server.ts`
-  - Implement `getUser()` function
-  - Implement `requireAuth()` function
-
-**Files to Create:**
-- `__tests__/unit/auth/server.test.ts`
-- `lib/auth/server.ts`
-
-#### 4.2 Client-Side Auth Hook
-**⚠️ Write tests BEFORE implementation**
-
-- [x] **TEST:** Write tests for `useAuth()` hook
-  - Test loading states
-  - Test user state management
-  - Test sign out functionality
-  - Test error handling
-- [x] **IMPLEMENT:** Create `lib/hooks/useAuth.ts`
-  - Return user, loading, error states
-  - Provide sign out method
-  - Handle auth state changes
-
-**Files to Create:**
-- `__tests__/hooks/useAuth.test.ts`
-- `lib/hooks/useAuth.ts`
-
-**Deliverable:** Standardized auth patterns with comprehensive tests
-
----
-
-### Phase 5: Database Schema & Migrations
-**Goal:** Create profiles table with RLS policies and automatic creation trigger
-
-#### 5.1 Declarative Schema Definition
-- [x] Create `supabase/schemas/profiles.sql` with declarative schema:
-  - `id` (UUID, primary key, references auth.users)
-  - `email` (TEXT, NOT NULL)
-  - `full_name` (TEXT)
-  - `avatar_url` (TEXT)
-  - `created_at` (TIMESTAMPTZ, default NOW())
-  - `updated_at` (TIMESTAMPTZ, default NOW())
-- [x] Define RLS policies in schema:
-  - Enable RLS
-  - SELECT policy: users can read own profile
-  - UPDATE policy: users can update own profile
-  - INSERT policy: users can insert own profile
-- [x] Define trigger function for `updated_at` auto-update
-- [x] Define trigger function for automatic profile creation
-- [x] Document schema design decisions
-
-**Files to Create:**
-- `supabase/schemas/profiles.sql`
-
-#### 5.2 Generate and Review Migration
-- [x] Run `npx supabase db diff -f create_profiles_table` to generate migration
-- [x] Review generated migration file in `supabase/migrations/`
-- [x] Verify all RLS policies are included
-- [x] Verify trigger functions are included
-- [x] Test migration locally with `npx supabase db reset`
-- [x] Verify profile creation trigger works (test signup)
-
-**Files Generated:**
-- `supabase/migrations/YYYYMMDDHHMMSS_create_profiles_table.sql`
-
-#### 5.3 Test Database Policies (Integration Tests)
-- [x] Write integration test for automatic profile creation
-- [x] Write integration test for RLS SELECT policy
-- [x] Write integration test for RLS UPDATE policy
-- [x] Write integration test for RLS policy violations
-- [x] Run tests against local Supabase instance
-
-**Files to Create:**
-- `__tests__/integration/profileCreation.test.ts`
-- `__tests__/integration/profileRLS.test.ts`
-
-**Deliverable:** Production-ready database schema with tested RLS policies
-
----
-
-### Phase 6: UI Components (Test-First)
-**Goal:** Create reusable UI components with tests
-
-#### 6.1 Basic UI Components
-**⚠️ Write tests BEFORE implementation**
-
-For each component:
-1. Write component tests first
-2. Implement component to pass tests
-3. Add proper TypeScript types
-4. Add JSDoc comments
-
-**Components to Create:**
-
-- [x] **Button Component**
-  - [x] TEST: `__tests__/components/ui/Button.test.tsx`
-  - [x] IMPLEMENT: `components/ui/Button.tsx`
-  - Variants: primary, secondary, danger
-  - Loading state support
-  - Disabled state
-
-- [x] **Input Component**
-  - [x] TEST: `__tests__/components/ui/Input.test.tsx`
-  - [x] IMPLEMENT: `components/ui/Input.tsx`
-  - Types: text, email, password
-  - Error state display
-  - Label support
-
-- [x] **Form Component**
-  - [x] TEST: `__tests__/components/ui/Form.test.tsx`
-  - [x] IMPLEMENT: `components/ui/Form.tsx`
-  - Form submission handling
-  - Error display
-  - Loading state
-
-- [x] **Card Component**
-  - [x] TEST: `__tests__/components/ui/Card.test.tsx`
-  - [x] IMPLEMENT: `components/ui/Card.tsx`
-  - Layout wrapper
-  - Title/description support
-
-#### 6.2 Auth Components
-**⚠️ Write tests BEFORE implementation**
-
-- [x] **LoginForm Component**
-  - [x] TEST: `__tests__/components/auth/LoginForm.test.tsx`
-  - [x] IMPLEMENT: `components/auth/LoginForm.tsx`
-  - Email/password fields
-  - Error handling
-  - Loading state
-  - Submit handler
-
-- [x] **SignupForm Component**
-  - [x] TEST: `__tests__/components/auth/SignupForm.test.tsx`
-  - [x] IMPLEMENT: `components/auth/SignupForm.tsx`
-  - Email/password fields
-  - Password confirmation
-  - Error handling
-  - Loading state
-
-- [x] **ProfileForm Component**
-  - [x] TEST: `__tests__/components/auth/ProfileForm.test.tsx`
-  - [x] IMPLEMENT: `components/auth/ProfileForm.tsx`
-  - Full name field
-  - Avatar upload
-  - Save button
-  - Error/success states
-
-**Deliverable:** Fully tested, reusable component library
-
----
-
-### Phase 7: Page Implementation (Test-First)
-**Goal:** Build all required pages with proper authentication
-
-#### 7.1 Public Pages
-
-- [x] **Home Page (`app/page.tsx`)**
-  - [x] TEST: Integration test for home page rendering
-  - [x] IMPLEMENT: Home page component
-  - Welcome message
-  - Auth status display
-  - Conditional navigation links
-  - Server Component (default)
-
-- [x] **Login Page (`app/(auth)/login/page.tsx`)**
-  - [x] TEST: Integration test for login flow
-  - [x] IMPLEMENT: Login page
-  - Use LoginForm component
-  - Redirect logic after successful login
-  - Error handling
-  - Client Component (for form interactivity)
-
-- [x] **Signup Page (`app/(auth)/signup/page.tsx`)**
-  - [x] TEST: Integration test for signup flow
-  - [x] IMPLEMENT: Signup page
-  - Use SignupForm component
-  - Redirect logic after successful signup
-  - Error handling
-  - Client Component
-
-#### 7.2 Protected Pages
-
-- [x] **Dashboard Page (`app/(dashboard)/dashboard/page.tsx`)**
-  - [x] TEST: Integration test for auth protection
-  - [x] TEST: Test user info display
-  - [x] IMPLEMENT: Dashboard page
-  - Use `requireAuth()` for protection
-  - Display user profile info
-  - Navigation links
-  - Sign out button
-  - Server Component with client components for interactive parts
-
-- [x] **Profile Page (`app/(dashboard)/profile/page.tsx`)**
-  - [x] TEST: Integration test for profile loading
-  - [x] TEST: Test profile update flow
-  - [x] TEST: Test avatar upload
-  - [x] IMPLEMENT: Profile page
-  - Use `requireAuth()` for protection
-  - Use ProfileForm component
-  - Load current profile data
-  - Handle updates
-  - Avatar upload functionality
-
-#### 7.3 Layouts
-
-- [x] **Root Layout (`app/layout.tsx`)**
-  - [x] Update with proper metadata
-  - [x] Add global styles
-  - [x] Add providers if needed
-
-- [x] **Auth Layout (`app/(auth)/layout.tsx`)**
-  - [x] Create layout for auth pages
-  - [x] Redirect to dashboard if already logged in
-
-- [x] **Dashboard Layout (`app/(dashboard)/layout.tsx`)**
-  - [x] Create layout for protected pages
-  - [x] Add navigation
-  - [x] Add sign out button
-
-**Files to Create:**
-- `app/(auth)/login/page.tsx`
-- `app/(auth)/signup/page.tsx`
-- `app/(auth)/layout.tsx`
-- `app/(dashboard)/dashboard/page.tsx`
-- `app/(dashboard)/profile/page.tsx`
-- `app/(dashboard)/layout.tsx`
-- `__tests__/integration/auth-flow.test.ts`
-- `__tests__/integration/profile-page.test.ts`
-
-**Deliverable:** Fully functional pages with authentication flows
-
----
-
-### ✅ Phase 8 Summary
-
-#### Avatar Upload Functionality - COMPLETE
-
-**Goal:** Implement file upload to Supabase Storage ✅
-
-##### 8.1 Supabase Storage Setup ✅
-- ✅ Created storage bucket via `supabase/seed.sql`
-- ✅ Configured storage policies:
-  - Users can upload their own avatars (folder-based)
-  - Avatars are publicly viewable
-  - Users can update/delete their own avatars
-- ✅ Updated `supabase/config.toml` with avatars bucket configuration:
-  - Public access enabled
-  - File size limit: 5MB
-  - Allowed MIME types: JPEG, PNG, GIF, WebP
-
-##### 8.2 Upload Utility (Test-First) ✅
-- ✅ **TEST FIRST:** Created `__tests__/unit/utils/uploadAvatar.test.ts` with 3 tests:
-  - File size validation (rejects >5MB)
-  - File type validation (rejects non-image files)
-  - File existence validation
-- ✅ **IMPLEMENTED:** Created `lib/utils/uploadAvatar.ts`
-  - Validates file size (max 5MB)
-  - Validates file type (JPEG, PNG, GIF, WebP only)
-  - Uploads to Supabase Storage with unique filename
-  - Generates and returns public URL
-  - Returns error object on failure
-  - Proper error handling with user-friendly messages
-
-##### 8.3 Integrated Upload into ProfileForm ✅
-- ✅ Updated `components/auth/ProfileForm.tsx`:
-  - Integrated `uploadAvatar()` utility
-  - File input with proper accept attribute
-  - Upload handler processes file before profile update
-  - Updates profile with avatar_url after successful upload
-  - Displays upload errors to user
-  - Manages async upload state
-
-##### 8.4 Tests Updated ✅
-- ✅ Updated `__tests__/components/auth/ProfileForm.test.tsx` with proper mocking of:
-  - `uploadAvatar` function (vi.hoisted pattern)
-  - Supabase client storage methods
-  - All 4 existing tests still passing
-- ✅ Updated `__tests__/integration/profile-page.test.tsx` with proper mocking
-  - Both profile page tests passing
-
-##### 8.5 Test Results ✅
-- **Test Files:** 22 passed | 2 skipped (24 total)
-- **Tests:** 53 passed (53 total) - up from 50
-- **New Tests:** 3 uploadAvatar validation tests
-- **Duration:** ~8.6 seconds
-
-**Files Created:**
-- ✅ `lib/utils/uploadAvatar.ts` - Avatar upload utility
-- ✅ `__tests__/unit/utils/uploadAvatar.test.ts` - Upload validation tests
-- ✅ `supabase/seed.sql` - Storage bucket and RLS policies
-
-**Files Modified:**
-- ✅ `components/auth/ProfileForm.tsx` - Upload integration
-- ✅ `supabase/config.toml` - Bucket configuration
-- ✅ `__tests__/components/auth/ProfileForm.test.tsx` - Mock updates
-- ✅ `__tests__/integration/profile-page.test.tsx` - Mock updates
-
-**Deliverable:** Fully functional avatar upload with comprehensive tests ✅
-
----
-
-### ✅ Phase 9 Summary
-
-#### Automated Setup Script - COMPLETE
-
-**Goal:** Create automated setup script for project initialization ✅
-
-##### 9.1 Implementation Approach ✅
-- ✅ Chose TypeScript/Node.js for cross-platform compatibility
-- ✅ Designed comprehensive error handling with user-friendly messages
-- ✅ Planned idempotent operations (safe to run multiple times)
-
-##### 9.2 Setup Script Features ✅
-- ✅ Checks prerequisites (Node.js, npm, Supabase CLI)
-- ✅ Installs npm dependencies automatically
-- ✅ Detects if Supabase is already running (avoids conflicts)
-- ✅ Starts Supabase local instance with progress feedback
-- ✅ Extracts credentials from `npx supabase status`:
-  - API URL
-  - Anon Key
-- ✅ Creates/updates `.env.local` file automatically
-- ✅ Runs database migrations (`npx supabase db reset`)
-- ✅ Runs test suite to verify setup
-- ✅ Provides clear success messages with next steps
-- ✅ Colorized terminal output for better UX
-- ✅ Comprehensive error handling with troubleshooting hints
-
-##### 9.3 Documentation Updates ✅
-- ✅ Added Quick Start section to README with automated setup
-- ✅ Documented manual setup alternative (step-by-step)
-- ✅ Added project structure documentation
-- ✅ Documented authentication patterns
-- ✅ Added troubleshooting section
-- ✅ Included Vercel deployment guide
-- ✅ Documented GitHub Actions setup
-
-**Files Created:**
-- ✅ `setup.ts` - Automated setup script (340+ lines)
-- ✅ Updated `package.json` - Added `setup` script and `tsx` dependency
-- ✅ Updated `README.md` - Comprehensive documentation
-
-**Usage:**
-```bash
-npm install
-npm run setup
-```
-
-**Deliverable:** Production-ready automated setup script with comprehensive documentation ✅
-
----
-
-### ✅ Phase 10 Summary
-
-#### GitHub Actions Workflow - COMPLETE
-
-**Goal:** Automate database migrations on deployment ✅
-
-##### 10.1 GitHub Actions Configuration ✅
-- ✅ Created `.github/workflows/` directory structure
-- ✅ Created `migrate.yml` workflow file
-- ✅ Configured to trigger on push to main branch
-- ✅ Configured to trigger only when migration files change
-- ✅ Added Supabase project linking with secrets
-- ✅ Implemented migration execution with error handling
-
-##### 10.2 Workflow Features ✅
-- ✅ Runs on Ubuntu latest runner
-- ✅ Checks out repository code
-- ✅ Sets up Node.js 20 with npm caching
-- ✅ Installs Supabase CLI globally
-- ✅ Links to production Supabase project using secrets
-- ✅ Executes `supabase db push` to apply migrations
-- ✅ Provides success/failure feedback
-- ✅ Includes helpful error messages for debugging
-
-##### 10.3 Security & Best Practices ✅
-- ✅ Uses GitHub Secrets for sensitive credentials:
-  - `SUPABASE_PROJECT_ID`
-  - `SUPABASE_ACCESS_TOKEN`
-- ✅ Never commits credentials to repository
-- ✅ Runs only on specific file path changes
-- ✅ Clear error messages for common issues
-
-##### 10.4 Documentation ✅
-- ✅ README includes complete GitHub Actions setup guide
-- ✅ Instructions for creating Supabase access tokens
-- ✅ Instructions for configuring GitHub Secrets
-- ✅ Example workflow explained
-- ✅ Testing instructions included
-
-**Files Created:**
-- ✅ `.github/workflows/migrate.yml` - Migration automation workflow
-
-**How to Use:**
-1. Add `SUPABASE_PROJECT_ID` and `SUPABASE_ACCESS_TOKEN` to GitHub Secrets
-2. Push migration changes to main branch
-3. Workflow runs automatically and applies migrations to production
-
-**Deliverable:** Automated CI/CD pipeline for database migrations ✅
-
----
-
-### Phase 10: GitHub Actions Workflow
-**Goal:** Automate database migrations on deployment
-
-#### 10.1 Create GitHub Actions Workflow
-- [ ] Create `.github/workflows/` directory
-- [ ] Create migration workflow file (e.g., `migrate.yml`)
-- [ ] Configure workflow to run on push to main
-- [ ] Set up Supabase project linking
-- [ ] Test workflow (push to GitHub and verify)
-
-**Files to Create:**
-- `.github/workflows/migrate.yml`
-
-**Workflow Should:**
-- Install Supabase CLI
-- Link to Supabase project
-- Run migrations
-- Report success/failure
-
-**Deliverable:** Automated CI/CD pipeline for database migrations ✅
-
----
-
-### ✅ Phase 11 Summary
-
-#### Documentation - COMPLETE
-
-**Goal:** Comprehensive, professional documentation throughout the project ✅
-
-##### 11.1 Core Documentation Files Created ✅
-
-**ARCHITECTURE.md** (2000+ lines)
-- ✅ High-level architecture diagram
-- ✅ Core architectural decisions explained:
-  - Next.js App Router rationale
-  - Supabase SSR implementation
-  - TypeScript strict mode benefits
-  - Test-first development approach
-  - Automatic profile creation strategy
-  - Row Level Security patterns
-  - Declarative schema management
-- ✅ Directory structure and responsibilities
-- ✅ Authentication architecture and flow
-- ✅ Data flow patterns (Server Components vs Client Components)
-- ✅ Testing architecture and mocking strategy
-- ✅ Deployment architecture
-- ✅ Configuration management
-- ✅ Performance considerations
-- ✅ Security considerations
-- ✅ Key architectural patterns
-- ✅ Migration strategy workflow
-- ✅ Learning resources
-
-**DATABASE.md** (1500+ lines)
-- ✅ Database overview and schema management approach
-- ✅ Complete schema documentation:
-  - profiles table with all columns, types, constraints
-  - Indexes, foreign keys, cascading deletes
-- ✅ Comprehensive RLS policy documentation:
-  - Each policy explained with how it works
-  - Example queries showing policy enforcement
-  - Testing strategies for RLS
-- ✅ Database triggers documentation:
-  - handle_new_user() function explained
-  - Trigger creation and workflow
-  - Why triggers over application code
-- ✅ Migration management workflow:
-  - Declarative schema → Generate → Review → Apply → Test → Deploy
-  - Step-by-step instructions with examples
-  - Best practices and common pitfalls
-- ✅ Querying patterns (Supabase client and direct SQL)
-- ✅ Common database operations with examples
-- ✅ Troubleshooting guide for common issues
-- ✅ Monitoring and debugging SQL queries
-
-**DEPLOYMENT.md** (1200+ lines)
-- ✅ Deployment overview and architecture
-- ✅ Prerequisites checklist
-- ✅ Step-by-step deployment guide:
-  - Phase 1: Create production Supabase project
-  - Phase 2: Apply database migrations (automated and manual options)
-  - Phase 3: Test database and auth
-  - Phase 4: Deploy to Vercel with environment variables
-  - Phase 5: Test production application
-- ✅ Configuration details (environment variables, Supabase settings)
-- ✅ Continuous deployment setup
-- ✅ Comprehensive troubleshooting section:
-  - Vercel build failures
-  - Environment variable issues
-  - Migration failures
-  - RLS policy problems
-  - Email confirmation issues
-  - Avatar upload issues
-- ✅ Monitoring and maintenance guide
-- ✅ Security best practices
-- ✅ Performance optimization tips
-- ✅ Rollback strategy for code and database
-- ✅ Production checklist
-- ✅ Post-deployment steps
-
-**MANUAL_TESTING_CHECKLIST.md**
-- ✅ Pre-testing setup checklist
-- ✅ Authentication flow tests (signup, login, logout)
-- ✅ Protected route tests
-- ✅ Profile management tests (view, edit, validation)
-- ✅ Avatar upload tests (valid/invalid files, replacement)
-- ✅ Row Level Security tests (multi-user scenarios)
-- ✅ UI component tests
-- ✅ Responsive design tests (desktop, tablet, mobile)
-- ✅ Browser compatibility tests
-- ✅ Performance tests (Lighthouse, load times)
-- ✅ Error handling tests
-- ✅ Console and error checks
-- ✅ Security checks
-- ✅ Final verification checklist
-- ✅ Test results log template
-
-##### 11.2 JSDoc Comments ✅
-- ✅ `lib/utils/formatDate.ts` - Function documentation
-- ✅ `lib/utils/uploadAvatar.ts` - Comprehensive JSDoc with examples
-- ✅ `lib/auth/server.ts` - getUser() and requireAuth() documented
-- ✅ `lib/auth/ensureUser.ts` - Function documentation
-- ✅ `lib/hooks/useAuth.ts` - Hook documentation
-- ✅ `lib/supabase/client.ts` - Client creation documentation with examples
-- ✅ `lib/supabase/server.ts` - Server client documentation with examples
-
-##### 11.3 README.md Enhancements ✅
-- ✅ Quick Start section with automated setup
-- ✅ Manual setup alternative
-- ✅ Project structure documentation
-- ✅ Authentication patterns documentation
-- ✅ Testing instructions
-- ✅ Deployment guide overview
-- ✅ Troubleshooting section
-- ✅ GitHub Actions setup documentation
-
-**Files Created/Modified:**
-- ✅ `ARCHITECTURE.md` - NEW (300+ lines)
-- ✅ `DATABASE.md` - NEW (600+ lines)
-- ✅ `DEPLOYMENT.md` - NEW (550+ lines)
-- ✅ `MANUAL_TESTING_CHECKLIST.md` - NEW (400+ lines)
-- ✅ Updated JSDoc comments in 7 lib files
-- ✅ Enhanced README.md (previously updated in Phase 9)
-
-**Deliverable:** Professional, comprehensive, production-ready documentation ✅
-
----
-
-### ✅ Phase 12 Summary
-
-#### Final QA & Testing - COMPLETE
-
-**Goal:** Verify the entire application is production-ready ✅
-
-##### 12.1 Automated Test Suite ✅
-- ✅ All unit tests passing (22 test files)
-- ✅ All component tests passing
-- ✅ All integration tests passing
-- ✅ Total: 53 tests passing
-- ✅ Test coverage on critical paths (auth, RLS, profile creation)
-
-##### 12.2 Code Quality Checks ✅
-- ✅ TypeScript compilation: **No errors** ✅
-- ✅ ESLint: **No errors** ✅
-- ✅ Console statement audit:
-  - setup.ts: Appropriate (CLI script)
-  - uploadAvatar.ts: console.error for error logging (appropriate)
-  - JSDoc examples: Documentation only (appropriate)
-- ✅ Code follows project conventions:
-  - Proper TypeScript types (no `any` usage)
-  - JSDoc comments on exported functions
-  - Error handling implemented
-  - RLS policies enabled and tested
-
-##### 12.3 Manual Testing Documentation ✅
-- ✅ Created comprehensive MANUAL_TESTING_CHECKLIST.md
-- ✅ Covers all critical user flows:
-  - Authentication (signup, login, logout)
-  - Protected routes
-  - Profile management
-  - Avatar upload
-  - RLS security
-  - UI components
-  - Responsive design
-  - Browser compatibility
-  - Performance
-  - Error handling
-  - Security
-
-##### 12.4 Documentation Review ✅
-- ✅ All major documentation files complete
-- ✅ JSDoc comments added to all exported functions
-- ✅ README.md comprehensive and up-to-date
-- ✅ Architecture decisions documented
-- ✅ Database schema and RLS documented
-- ✅ Deployment process documented
-
-##### 12.5 Production Readiness ✅
-- ✅ No TypeScript errors
-- ✅ No ESLint errors
-- ✅ All automated tests passing
-- ✅ Code quality verified
-- ✅ Documentation complete
-- ✅ Security checks in place (RLS, environment variables)
-- ✅ Performance considerations documented
-- ✅ Error handling implemented
-- ✅ Manual testing checklist available
-
-**Deliverable:** Production-ready application with comprehensive quality assurance ✅
-
----
-
-### Phase 13: Deployment Preparation
-**Goal:** Document as you build - don't leave it for the end
-
-#### 11.1 Documentation Strategy
-**Documentation should be completed alongside each phase, not as a separate task.**
-
-For each phase, documentation tasks include:
-- [ ] Add JSDoc comments to all exported functions as they're created
-- [ ] Add inline comments explaining WHY (not WHAT) for complex logic
-- [ ] Document component props with TypeScript types
-- [ ] Update relevant sections of README.md as features are implemented
-- [ ] Create README files in new directories explaining their purpose
-
-#### 11.2 Phase-by-Phase Documentation Checklist
-
-**During Phase 1-2 (Foundation & Testing):**
-- [ ] Document project structure in README
-- [ ] Document testing setup and how to run tests
-- [ ] Create initial README with project overview and prerequisites
-
-**During Phase 3-5 (Supabase & Auth):**
-- [ ] Document Supabase setup and configuration
-- [ ] Document authentication patterns (useAuth hook, getUser, requireAuth)
-- [ ] Add comments to auth-related utility functions
-- [ ] Document database schema design decisions
-
-**During Phase 6-7 (Components & Pages):**
-- [ ] Add JSDoc comments to all component files
-- [ ] Document component prop interfaces
-- [ ] Add comments to complex component logic
-- [ ] Document page-level routing structure
-
-**During Phase 8-9 (Features & Setup):**
-- [ ] Document avatar upload process and validation
-- [ ] Document setup script usage and troubleshooting
-- [ ] Document how to create and run migrations
-
-**During Phase 10 (GitHub Actions):**
-- [ ] Document CI/CD workflow and how it works
-
-#### 11.3 Final Documentation Review (Phase 12)
-Before final QA, complete any remaining documentation:
-- [ ] Ensure all exported functions have JSDoc comments
-- [ ] Review all comments for accuracy and clarity
-- [ ] Complete comprehensive README.md with all sections:
-  - Project overview and objectives
-  - Tech stack with versions
-  - Prerequisites and installation
-  - Quick start guide (using setup script)
-  - Manual setup instructions (step-by-step)
-  - Project structure explanation
-  - Authentication patterns documentation
-  - Testing instructions (how to run, how to add tests, coverage info)
-  - Deployment guide
-  - Environment variables reference
-  - Troubleshooting section
-  - Contributing guidelines
-- [ ] Create `ARCHITECTURE.md` documenting key architectural decisions
-- [ ] Create `DEPLOYMENT.md` with detailed production deployment steps
-- [ ] Create `DATABASE.md` documenting schema, RLS policies, and triggers
-- [ ] Add README files in major directories:
-  - `lib/README.md` - Utility and helper functions
-  - `components/README.md` - Component organization and usage
-  - `app/README.md` - Page structure and routing
-  - `supabase/README.md` - Schema and migration information
-
-**Deliverable:** Professional, comprehensive, up-to-date documentation throughout the project
-
-**Key Principle:** Never say "I'll document this later" - it never happens. Write documentation as you implement features.
-
----
-
-### Phase 12: Final Testing & Quality Assurance
-**Goal:** Ensure everything works end-to-end
-
-#### 12.1 Full Test Suite Run
-- [ ] Run all unit tests
-- [ ] Run all component tests
-- [ ] Run all integration tests
-- [ ] Check test coverage (aim for >80% on critical paths)
-- [ ] Fix any failing tests
-
-#### 12.2 Manual Testing Checklist
-- [ ] Test complete signup flow
-- [ ] Verify automatic profile creation
-- [ ] Test login flow
-- [ ] Test protected route access (when logged out)
-- [ ] Test protected route access (when logged in)
-- [ ] Test profile viewing
-- [ ] Test profile editing
-- [ ] Test avatar upload
-- [ ] Test sign out
-- [ ] Test RLS policies (try to access other users' data)
-
-#### 12.3 Code Quality Checks
-- [ ] Run TypeScript compiler (`npx tsc --noEmit`)
-- [ ] Run ESLint (`npm run lint`)
-- [ ] Format code with Prettier
-- [ ] Review for any `any` types
-- [ ] Check for console.log statements to remove
-- [ ] Review error handling coverage
-
-#### 12.4 Fresh Setup Test
-- [ ] Delete `node_modules/`
-- [ ] Delete `.env.local`
-- [ ] Stop Supabase (`npx supabase stop`)
-- [ ] Run setup script
-- [ ] Verify app works correctly
-- [ ] Test all features again
-
-**Deliverable:** Production-ready application
-
----
-
-### Phase 13: Deployment Preparation
-**Goal:** Prepare for production deployment
-
-#### 13.1 Production Checklist
-- [ ] Create production Supabase project
-- [ ] Run migrations on production database
-- [ ] Configure production environment variables
-- [ ] Test deployment on Vercel/Netlify (or chosen platform)
-- [ ] Verify authentication works in production
-- [ ] Verify RLS policies work in production
-- [ ] Test avatar upload in production
-
-#### 13.2 Performance & Security Review
-- [ ] Verify all routes have proper authentication
-- [ ] Check for exposed secrets
-- [ ] Review RLS policies one final time
-- [ ] Test with slow network connection
-- [ ] Check bundle size
-- [ ] Run Lighthouse audit
-
-**Deliverable:** Deployed, production-ready application
-
----
-
-## 📊 Project Milestones
-
-| Milestone | Phases | Completion Criteria |
-|-----------|--------|---------------------|
-| **M1: Foundation** | 1-2 | Project structure set up, testing framework working |
-| **M2: Backend Ready** | 3-5 | Supabase configured, auth working, database schema deployed |
-| **M3: UI Complete** | 6-7 | All components and pages implemented with tests |
-| **M4: Features Done** | 8-9 | Avatar upload working, setup script functional |
-| **M5: Ready to Ship** | 10-13 | Documentation complete, all tests passing, deployed |
-
----
-
-## 🔄 Daily Workflow
-
-1. **Review current phase tasks**
-2. **Write tests first** (for new features)
-3. **Implement code** to pass tests
-4. **Run test suite** to ensure nothing broke
-5. **Update documentation** if needed
-6. **Commit with descriptive message**
-7. **Update this plan** with progress
-
----
-
-## 📝 Notes & Decisions
-
-### Key Architectural Decisions
-- Using `@supabase/ssr` for SSR support
-- Implementing automatic profile creation via database trigger (not application code)
-- Using declarative schemas and generated migrations (never manual SQL)
-- Test-first approach for all new features
-- Separate client utilities for server vs client components
-
-### Testing Strategy
-- **Unit tests:** All utility functions, pure functions
-- **Component tests:** All UI components, forms
-- **Integration tests:** Authentication flows, database operations, RLS policies
-- Mock Supabase clients in tests
-- Aim for >80% coverage on critical paths
-
-### Technology Choices
-- **Testing:** Vitest (faster than Jest, better ESM support)
-- **Styling:** TailwindCSS (utility-first, rapid development)
-- **Storage:** Supabase Storage (integrated, RLS support)
-- **Deployment:** Vercel (optimal Next.js support)
-
----
-
-## 🚨 Risk Management
+## Risks & Mitigations
 
 | Risk | Mitigation |
-|------|------------|
-| RLS policies not working correctly | Write comprehensive integration tests for all policies |
-| Automatic profile creation fails | Test trigger function thoroughly, add error handling |
-| Setup script fails on different OS | Test on Windows, Mac, Linux; provide fallback instructions |
-| Authentication state issues in SSR | Use `@supabase/ssr` correctly, test both server and client |
-| Migration conflicts | Use descriptive names, version control all migrations |
+|---|---|
+| RLS regressions | Maintain integration tests for owner/non-owner scenarios |
+| Local setup drift | Keep setup script as source of truth and validate periodically |
+| Env key mismatch | Use CLI env output parsing + post-reset refresh + retries |
+| SSR auth regressions | Preserve standardized server/client auth utility usage |
 
 ---
 
-## ✅ Definition of Done
+## Definition of Done (Final)
 
-A task is considered complete when:
-- [ ] Tests are written and passing
-- [ ] Code is implemented and working
-- [ ] TypeScript types are properly defined
-- [ ] Error handling is in place
-- [ ] Code is documented (JSDoc + inline comments)
-- [ ] No ESLint errors
-- [ ] Committed to version control
-- [ ] Documentation updated if needed
+This project is considered complete for assignment scope when:
+-  Feature requirements are implemented
+-  Tests pass in normal and fresh-setup flows
+-  Migrations/schemas/RLS are versioned and reproducible
+-  Documentation is complete and aligned with implementation
+-  Project is deployment-ready
 
 ---
 
-## 📚 References
+## References
 
-- [Copilot Instructions](.github/copilot-instructions.md) - Project rules and conventions
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-- [Vitest Documentation](https://vitest.dev/)
-- [React Testing Library](https://testing-library.com/react)
+- [README.md](README.md)
+- [ARCHITECTURE.md](ARCHITECTURE.md)
+- [DATABASE.md](DATABASE.md)
+- [DEPLOYMENT.md](DEPLOYMENT.md)
+- [MANUAL_TESTING_CHECKLIST.md](MANUAL_TESTING_CHECKLIST.md)
+- [__tests__/README.md](__tests__/README.md)
 
----
-
-**Last Updated:** February 23, 2026  
-**Status:** 🚀 Development Complete - Ready for Deployment  
-**Next Action:** Deploy to production following DEPLOYMENT.md guide
