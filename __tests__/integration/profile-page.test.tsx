@@ -33,6 +33,10 @@ vi.mock("@/lib/supabase/client", () => ({
   createSupabaseClient: vi.fn(() => mockSupabaseClient),
 }));
 
+vi.mock("@/lib/supabase/server", () => ({
+  createSupabaseServerClient: vi.fn(() => mockSupabaseClient),
+}));
+
 import ProfilePage from "../../app/(dashboard)/profile/page";
 
 describe("Profile page", () => {
