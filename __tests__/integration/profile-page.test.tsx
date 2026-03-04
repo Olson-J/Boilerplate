@@ -17,7 +17,23 @@ const { mockUploadAvatar, mockSupabaseClient } = vi.hoisted(() => {
       auth: {
         getUser: vi.fn(),
       },
-      from: vi.fn(),
+      from: vi.fn().mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({
+              data: { full_name: "Ada Lovelace", bio: null, avatar_url: null },
+              error: null,
+            }),
+            maybeSingle: vi.fn().mockResolvedValue({
+              data: { full_name: "Ada Lovelace", bio: null, avatar_url: null },
+              error: null,
+            }),
+          }),
+        }),
+        update: vi.fn().mockReturnValue({
+          eq: vi.fn().mockResolvedValue({ error: null }),
+        }),
+      }),
       storage: {
         from: vi.fn(),
       },
@@ -49,12 +65,6 @@ describe("Profile page", () => {
 
     mockSupabaseClient.auth.getUser.mockResolvedValue({
       data: { user: { id: "user-1" } },
-    });
-
-    mockSupabaseClient.from.mockReturnValue({
-      update: vi.fn().mockReturnValue({
-        eq: vi.fn().mockResolvedValue({ error: null }),
-      }),
     });
 
     mockSupabaseClient.storage.from.mockReturnValue({

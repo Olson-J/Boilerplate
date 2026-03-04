@@ -8,8 +8,13 @@ vi.mock("@/lib/auth/server", () => ({
 vi.mock("@/lib/supabase/server", () => ({
   createSupabaseServerClient: vi.fn(() => ({
     from: vi.fn().mockReturnValue({
-      select: vi.fn().mockResolvedValue({
-        data: [{ id: "user-1", full_name: "Test User", avatar_url: null }],
+      select: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          single: vi.fn().mockResolvedValue({
+            data: { full_name: "Test User" },
+            error: null,
+          }),
+        }),
       }),
     }),
   })),
