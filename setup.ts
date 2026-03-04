@@ -26,12 +26,14 @@ const colors = {
   cyan: '\x1b[36m',
 };
 
+const TOTAL_STEPS = 9;
+
 function log(message: string, color: keyof typeof colors = 'reset') {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
 function logStep(step: number, message: string) {
-  log(`\n[${step}/8] ${message}`, 'cyan');
+  log(`\n[${step}/${TOTAL_STEPS}] ${message}`, 'cyan');
 }
 
 function logSuccess(message: string) {
@@ -83,11 +85,24 @@ function extractSupabaseCredentials(): { url: string; anonKey: string; serviceRo
   try {
     const status = runCommand('npx supabase status', 'Get Supabase status');
     
-    // Parse status output for Project URL, Publishable key (anon), and Secret key (service role)
-    // Updated to match current supabase status output format
-    const urlMatch = status.match(/Project URL\s+\│\s+(.+?)\s+\│/);
-    const anonKeyMatch = status.match(/Publishable\s+\│\s+(sb_publishable.+?)\s+\│/);
-    const serviceRoleKeyMatch = status.match(/Secret\s+\│\s+(sb_secret.+?)\s+\│/);
+    // Support both old and new Supabase CLI status output formats.
+    // Old format examples:
+    //   API URL: http://127.0.0.1:54321
+    //   anon key: eyJ...
+    //   service_role key: eyJ...
+    // New format examples (table output):
+    //   Project URL │ http://127.0.0.1:54321 │
+    //   Publishable │ sb_publishable_...      │
+    //   Secret      │ sb_secret_...           │
+    const urlMatch =
+      status.match(/Project URL\s+\│\s+(.+?)\s+\│/) ??
+      status.match(/API URL:\s*(.+)/);
+    const anonKeyMatch =
+      status.match(/Publishable\s+\│\s+(.+?)\s+\│/) ??
+      status.match(/anon key:\s*(.+)/);
+    const serviceRoleKeyMatch =
+      status.match(/Secret\s+\│\s+(.+?)\s+\│/) ??
+      status.match(/service_role key:\s*(.+)/);
     
     if (urlMatch && anonKeyMatch && serviceRoleKeyMatch) {
       return {
@@ -276,9 +291,30 @@ async function main() {
     log('  You can try running migrations manually:', 'yellow');
     log('  npx supabase db reset', 'yellow');
   }
+
+  // Supabase local credentials can change after db reset.
+  // Refresh credentials and .env.local before running tests.
+  logStep(8, 'Refreshing Supabase credentials after reset...');
+
+  const refreshedCredentials = extractSupabaseCredentials();
+
+  if (!refreshedCredentials) {
+    logWarning('Could not refresh credentials after reset. Tests may fail with stale .env.local values.');
+  } else {
+    try {
+      updateEnvFile(
+        refreshedCredentials.url,
+        refreshedCredentials.anonKey,
+        refreshedCredentials.serviceRoleKey
+      );
+      logSuccess('Credentials refreshed after database reset');
+    } catch (error: any) {
+      logWarning(`Could not refresh .env.local after reset: ${error.message}`);
+    }
+  }
   
-  // Step 8: Run tests
-  logStep(8, 'Running tests...');
+  // Step 9: Run tests
+  logStep(9, 'Running tests...');
   
   try {
     log('Running: npm test');
