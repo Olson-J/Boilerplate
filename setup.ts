@@ -60,6 +60,10 @@ function runCommand(command: string, description: string): string {
   }
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function checkPrerequisite(command: string, name: string, installInstructions: string): boolean {
   try {
     execSync(command, { stdio: 'ignore' });
@@ -81,42 +85,68 @@ function isSupabaseRunning(): boolean {
   }
 }
 
-function extractSupabaseCredentials(): { url: string; anonKey: string; serviceRoleKey: string } | null {
-  try {
-    const status = runCommand('npx supabase status', 'Get Supabase status');
-    
-    // Support both old and new Supabase CLI status output formats.
-    // Old format examples:
-    //   API URL: http://127.0.0.1:54321
-    //   anon key: eyJ...
-    //   service_role key: eyJ...
-    // New format examples (table output):
-    //   Project URL │ http://127.0.0.1:54321 │
-    //   Publishable │ sb_publishable_...      │
-    //   Secret      │ sb_secret_...           │
-    const urlMatch =
-      status.match(/Project URL\s+\│\s+(.+?)\s+\│/) ??
-      status.match(/API URL:\s*(.+)/);
-    const anonKeyMatch =
-      status.match(/Publishable\s+\│\s+(.+?)\s+\│/) ??
-      status.match(/anon key:\s*(.+)/);
-    const serviceRoleKeyMatch =
-      status.match(/Secret\s+\│\s+(.+?)\s+\│/) ??
-      status.match(/service_role key:\s*(.+)/);
-    
-    if (urlMatch && anonKeyMatch && serviceRoleKeyMatch) {
-      return {
-        url: urlMatch[1].trim(),
-        anonKey: anonKeyMatch[1].trim(),
-        serviceRoleKey: serviceRoleKeyMatch[1].trim(),
+async function extractSupabaseCredentials(): Promise<{ url: string; anonKey: string; serviceRoleKey: string } | null> {
+  const maxAttempts = 10;
+  const retryDelayMs = 2000;
+  let lastError: string | null = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      // Preferred: machine-readable env output, includes JWT anon/service_role keys
+      // required by integration tests using supabase-js admin APIs.
+      const statusEnv = runCommand('npx supabase status --output env', 'Get Supabase status env output');
+
+      const parseEnvVar = (content: string, key: string): string | null => {
+        const regex = new RegExp(`^${key}="?(.+?)"?$`, 'm');
+        const match = content.match(regex);
+        return match ? match[1].trim() : null;
       };
+
+      const envUrl = parseEnvVar(statusEnv, 'API_URL');
+      const envAnonKey = parseEnvVar(statusEnv, 'ANON_KEY');
+      const envServiceRoleKey = parseEnvVar(statusEnv, 'SERVICE_ROLE_KEY');
+
+      if (envUrl && envAnonKey && envServiceRoleKey) {
+        return {
+          url: envUrl,
+          anonKey: envAnonKey,
+          serviceRoleKey: envServiceRoleKey,
+        };
+      }
+
+      // Fallback: human-readable status output (older scripts/CLI output variants)
+      const status = runCommand('npx supabase status', 'Get Supabase status');
+
+      const urlMatch =
+        status.match(/Project URL\s+\│\s+(.+?)\s+\│/) ??
+        status.match(/API URL:\s*(.+)/);
+      const anonKeyMatch =
+        status.match(/anon key:\s*(.+)/) ??
+        status.match(/Publishable\s+\│\s+(.+?)\s+\│/);
+      const serviceRoleKeyMatch =
+        status.match(/service_role key:\s*(.+)/) ??
+        status.match(/Secret\s+\│\s+(.+?)\s+\│/);
+
+      if (urlMatch && anonKeyMatch && serviceRoleKeyMatch) {
+        return {
+          url: urlMatch[1].trim(),
+          anonKey: anonKeyMatch[1].trim(),
+          serviceRoleKey: serviceRoleKeyMatch[1].trim(),
+        };
+      }
+
+      lastError = 'Supabase status output missing required credential fields';
+    } catch (error: any) {
+      lastError = error.message;
     }
-    
-    return null;
-  } catch (error: any) {
-    logError(`Failed to extract Supabase credentials: ${error.message}`);
-    return null;
+
+    if (attempt < maxAttempts) {
+      await sleep(retryDelayMs);
+    }
   }
+
+  logError(`Failed to extract Supabase credentials: ${lastError ?? 'Unknown error'}`);
+  return null;
 }
 
 function updateEnvFile(url: string, anonKey: string, serviceRoleKey: string) {
@@ -250,7 +280,7 @@ async function main() {
   // Step 5: Extract credentials
   logStep(5, 'Extracting Supabase credentials...');
   
-  const credentials = extractSupabaseCredentials();
+  const credentials = await extractSupabaseCredentials();
   
   if (!credentials) {
     logError('Failed to extract credentials from Supabase status');
@@ -296,7 +326,7 @@ async function main() {
   // Refresh credentials and .env.local before running tests.
   logStep(8, 'Refreshing Supabase credentials after reset...');
 
-  const refreshedCredentials = extractSupabaseCredentials();
+  const refreshedCredentials = await extractSupabaseCredentials();
 
   if (!refreshedCredentials) {
     logWarning('Could not refresh credentials after reset. Tests may fail with stale .env.local values.');
