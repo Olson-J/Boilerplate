@@ -83,10 +83,11 @@ function extractSupabaseCredentials(): { url: string; anonKey: string; serviceRo
   try {
     const status = runCommand('npx supabase status', 'Get Supabase status');
     
-    // Parse status output for API URL, anon key, and service role key
-    const urlMatch = status.match(/API URL: (.+)/);
-    const anonKeyMatch = status.match(/anon key: (.+)/);
-    const serviceRoleKeyMatch = status.match(/service_role key: (.+)/);
+    // Parse status output for Project URL, Publishable key (anon), and Secret key (service role)
+    // Updated to match current supabase status output format
+    const urlMatch = status.match(/Project URL\s+\│\s+(.+?)\s+\│/);
+    const anonKeyMatch = status.match(/Publishable\s+\│\s+(sb_publishable.+?)\s+\│/);
+    const serviceRoleKeyMatch = status.match(/Secret\s+\│\s+(sb_secret.+?)\s+\│/);
     
     if (urlMatch && anonKeyMatch && serviceRoleKeyMatch) {
       return {
