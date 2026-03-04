@@ -86,7 +86,7 @@ describe("Profile page", () => {
     renderWithProviders(await ProfilePage());
 
     expect(
-      screen.getByRole("heading", { name: "Your profile" })
+      screen.getByRole("heading", { name: "Ada Lovelace" })
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Full name")).toBeInTheDocument();
     expect(screen.getByLabelText("Avatar")).toBeInTheDocument();
